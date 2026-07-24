@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Examiyo — Chapters</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --primary-light: #3B82F6;
+            --secondary: #22C55E;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E5E7EB;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --radius: 18px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 16px 48px rgba(37, 99, 235, 0.12), 0 8px 24px rgba(37, 99, 235, 0.06);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.80);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.50);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 12px 0;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+        }
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.2px;
+            flex-shrink: 0;
+        }
+        .header-center .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.20);
+            cursor: default;
+            user-select: none;
+        }
+
+        /* ===== BACK BUTTON ===== */
+        .back-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 0 8px 0;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px 4px;
+            border-radius: 10px;
+            transition: color var(--transition), transform var(--transition);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+
+        .back-btn:active {
+            transform: scale(0.96);
+        }
+
+        .back-btn .back-arrow {
+            font-size: 18px;
+            transition: transform var(--transition);
+        }
+
+        .back-btn:hover .back-arrow {
+            transform: translateX(-3px);
+        }
+
+        /* ===== SUBJECT HEADER ===== */
+        .subject-hero {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 8px 0 4px 0;
+        }
+
+        .subject-hero-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 18px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .subject-hero-text h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+        }
+
+        .subject-hero-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* ===== CHAPTERS SECTION ===== */
+        .chapters-section {
+            padding: 20px 0 12px 0;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 18px;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .count {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 2px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+
+        /* ===== CHAPTER CARD ===== */
+        .chapters-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chapter-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            position: relative;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .chapter-card:active {
+            transform: scale(0.98);
+            transition-duration: 0.08s;
+        }
+
+        .chapter-card-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        .chapter-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+            transition: background var(--transition), border-color var(--transition), color var(--transition);
+        }
+
+        .chapter-card:hover .chapter-number {
+            background: rgba(37, 99, 235, 0.08);
+            border-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .chapter-info {
+            min-width: 0;
+        }
+
+        .chapter-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -0.1px;
+        }
+
+        .chapter-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chapter-meta .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            display: inline-block;
+        }
+
+        .chapter-arrow {
+            color: var(--text-muted);
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: transform var(--transition), color var(--transition);
+        }
+
+        .chapter-card:hover .chapter-arrow {
+            transform: translateX(4px);
+            color: var(--primary);
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            padding: 8px 0 env(safe-area-inset-bottom, 8px) 0;
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            max-width: 1120px;
+            margin: 0 auto;
+            border-radius: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 12px;
+            transition: color var(--transition), background var(--transition);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            background: transparent;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            min-width: 60px;
+        }
+
+        .nav-item .nav-icon {
+            font-size: 22px;
+            line-height: 1;
+            transition: transform var(--transition);
+        }
+
+        .nav-item .nav-label {
+            font-size: 10px;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.05);
+        }
+
+        .nav-item:active {
+            transform: scale(0.94);
+            transition-duration: 0.08s;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text-primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 200;
+            pointer-events: none;
+            font-family: 'Poppins', sans-serif;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 480px) {
+            .subject-hero-icon {
+                width: 64px;
+                height: 64px;
+                font-size: 34px;
+                border-radius: 20px;
+            }
+            .subject-hero-text h1 {
+                font-size: 28px;
+            }
+            .chapter-card {
+                padding: 22px 24px;
+            }
+            .chapter-number {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+            .chapter-name {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .container {
+                padding: 0 32px;
+            }
+            .header-inner {
+                padding: 0 32px;
+            }
+            .chapters-list {
+                gap: 14px;
+            }
+            .chapter-card {
+                padding: 24px 28px;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .container {
+                padding: 0 40px;
+            }
+            .header-inner {
+                padding: 0 40px;
+            }
+            .subject-hero {
+                padding: 16px 0 8px 0;
+            }
+            .subject-hero-icon {
+                width: 72px;
+                height: 72px;
+                font-size: 38px;
+                border-radius: 22px;
+            }
+            .subject-hero-text h1 {
+                font-size: 32px;
+            }
+            .subject-hero-text p {
+                font-size: 16px;
+            }
+            .section-title {
+                font-size: 19px;
+            }
+            .chapters-list {
+                gap: 16px;
+            }
+            .chapter-card {
+                padding: 28px 32px;
+                border-radius: 20px;
+            }
+            .chapter-name {
+                font-size: 17px;
+            }
+            .bottom-nav {
+                padding: 10px 0 env(safe-area-inset-bottom, 10px) 0;
+                border-radius: 20px 20px 0 0;
+                max-width: 480px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 12px;
+                box-shadow: var(--shadow-lg);
+                border: 1px solid var(--border);
+                border-bottom: none;
+            }
+            body {
+                padding-bottom: 100px;
+            }
+            .header {
+                padding: 16px 0;
+            }
+            .toast {
+                bottom: 120px;
+            }
+        }
+
+        @media (min-width: 1120px) {
+            .container {
+                padding: 0 48px;
+            }
+            .header-inner {
+                padding: 0 48px;
+            }
+            .chapters-list {
+                gap: 18px;
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chapter-card {
+            animation: fadeUp 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        .chapter-card:nth-child(1) {
+            animation-delay: 0.04s;
+        }
+        .chapter-card:nth-child(2) {
+            animation-delay: 0.08s;
+        }
+        .chapter-card:nth-child(3) {
+            animation-delay: 0.12s;
+        }
+        .chapter-card:nth-child(4) {
+            animation-delay: 0.16s;
+        }
+        .chapter-card:nth-child(5) {
+            animation-delay: 0.20s;
+        }
+        .chapter-card:nth-child(6) {
+            animation-delay: 0.24s;
+        }
+        .chapter-card:nth-child(7) {
+            animation-delay: 0.28s;
+        }
+        .chapter-card:nth-child(8) {
+            animation-delay: 0.32s;
+        }
+        .chapter-card:nth-child(9) {
+            animation-delay: 0.36s;
+        }
+        .chapter-card:nth-child(10) {
+            animation-delay: 0.40s;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" role="banner">
+        <div class="header-inner">
+            <a href="#" class="logo" aria-label="Examiyo Home">
+                <span class="logo-icon">E</span>
+                <span class="logo-text">Exami<span>yo</span></span>
+            </a>
+
+            <div class="header-center" aria-label="Current board and class">
+                <span class="badge-dot" aria-hidden="true"></span>
+                UP Board Class 10
+            </div>
+
+            <div class="header-avatar" aria-label="Student avatar">K</div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="container" role="main">
+
+        <!-- Back Button & Subject Hero -->
+        <div class="back-row">
+            <button class="back-btn" id="backBtn" aria-label="Go back to subjects">
+                <span class="back-arrow" aria-hidden="true">←</span>
+                Back to Subjects
+            </button>
+        </div>
+
+        <div class="subject-hero">
+            <div class="subject-hero-icon" id="subjectIcon" aria-hidden="true">📘</div>
+            <div class="subject-hero-text">
+                <h1 id="subjectName">Hindi</h1>
+                <p id="subjectDesc">Choose a chapter to start practicing</p>
+            </div>
+        </div>
+
+        <!-- Chapters -->
+        <section class="chapters-section" aria-labelledby="chapters-title">
+            <div class="section-title">
+                <span>Chapters</span>
+                <span class="count" id="chapterCount">0</span>
+            </div>
+
+            <div class="chapters-list" id="chapterList" role="list">
+                <!-- dynamically populated -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+        <button class="nav-item active" data-nav="home" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" data-nav="results">
+            <span class="nav-icon" aria-hidden="true">📊</span>
+            <span class="nav-label">Results</span>
+        </button>
+        <button class="nav-item" data-nav="profile">
+            <span class="nav-icon" aria-hidden="true">👤</span>
+            <span class="nav-label">Profile</span>
+        </button>
+    </nav>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- DATA -----
+            const subjectData = {
+                'Hindi': {
+                    icon: '📘',
+                    chapters: ['गद्य खंड', 'पद्य खंड', 'व्याकरण', 'रचना', 'अनुच्छेद लेखन', 'पत्र लेखन']
+                },
+                'English': {
+                    icon: '📗',
+                    chapters: ['Prose', 'Poetry', 'Grammar', 'Composition', 'Letter Writing', 'Comprehension']
+                },
+                'Mathematics': {
+                    icon: '📐',
+                    chapters: ['Number Systems', 'Algebra', 'Geometry', 'Statistics', 'Trigonometry', 'Mensuration']
+                },
+                'Science': {
+                    icon: '🧪',
+                    chapters: ['Physics', 'Chemistry', 'Biology', 'Environmental', 'Space Science', 'Matter']
+                },
+                'Social Science': {
+                    icon: '🌍',
+                    chapters: ['History', 'Geography', 'Civics', 'Economics', 'Culture', 'Environment']
+                },
+                'Sanskrit': {
+                    icon: '🕉',
+                    chapters: ['गद्य', 'पद्य', 'व्याकरण', 'रचना', 'अनुवाद', 'श्लोक']
+                }
+            };
+
+            // ----- DOM refs -----
+            const subjectIcon = document.getElementById('subjectIcon');
+            const subjectName = document.getElementById('subjectName');
+            const subjectDesc = document.getElementById('subjectDesc');
+            const chapterList = document.getElementById('chapterList');
+            const chapterCount = document.getElementById('chapterCount');
+            const backBtn = document.getElementById('backBtn');
+            const toast = document.getElementById('toast');
+            let toastTimer = null;
+
+            // ----- Get subject from URL -----
+            function getSubjectFromURL() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get('subject') || 'Hindi';
+            }
+
+            const currentSubject = getSubjectFromURL();
+            const data = subjectData[currentSubject] || subjectData['Hindi'];
+
+            // ----- Render -----
+            subjectIcon.textContent = data.icon;
+            subjectName.textContent = currentSubject;
+            subjectDesc.textContent = `Choose a chapter to start practicing`;
+
+            const chapters = data.chapters;
+            chapterCount.textContent = chapters.length;
+
+            chapterList.innerHTML = '';
+            chapters.forEach((chapter, index) => {
+                const card = document.createElement('div');
+                card.className = 'chapter-card';
+                card.setAttribute('role', 'listitem');
+                card.setAttribute('tabindex', '0');
+
+                const left = document.createElement('div');
+                left.className = 'chapter-card-left';
+
+                const num = document.createElement('span');
+                num.className = 'chapter-number';
+                num.textContent = String(index + 1).padStart(2, '0');
+
+                const info = document.createElement('div');
+                info.className = 'chapter-info';
+
+                const name = document.createElement('div');
+                name.className = 'chapter-name';
+                name.textContent = chapter;
+
+                const meta = document.createElement('div');
+                meta.className = 'chapter-meta';
+                meta.innerHTML = `
+                    <span>📝 20 questions</span>
+                    <span class="dot"></span>
+                    <span>⏱️ 15 min</span>
+                `;
+
+                info.appendChild(name);
+                info.appendChild(meta);
+
+                left.appendChild(num);
+                left.appendChild(info);
+
+                const arrow = document.createElement('span');
+                arrow.className = 'chapter-arrow';
+                arrow.textContent = '→';
+
+                card.appendChild(left);
+                card.appendChild(arrow);
+
+                // Click -> start test
+                card.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showToast(`📝 Starting "${chapter}" test…`);
+                });
+
+                // Keyboard support
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        card.click();
+                    }
+                });
+
+                chapterList.appendChild(card);
+            });
+
+            // ----- Back button -----
+            backBtn.addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+
+            // ----- Bottom nav -----
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                    const label = this.querySelector('.nav-label')?.textContent || 'page';
+                    showToast(`📱 Navigating to ${label}`);
+                });
+            });
+
+            // ----- Toast -----
+            function showToast(message) {
+                if (toastTimer) {
+                    clearTimeout(toastTimer);
+                    toast.classList.remove('show');
+                }
+                void toast.offsetWidth;
+                toast.textContent = message;
+                toast.classList.add('show');
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('show');
+                    toastTimer = null;
+                }, 2000);
+            }
+
+            // ----- Prevent zoom on double-tap (iOS) -----
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
+
+            console.log(`📚 Examiyo · ${currentSubject} · ${chapters.length} chapters loaded`);
+
+        })();
+    </script>
+
+</body>
+</html>
