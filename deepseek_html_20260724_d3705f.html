@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Examiyo — MCQ Practice Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --primary-light: #3B82F6;
+            --secondary: #22C55E;
+            --bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E5E7EB;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --radius: 18px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 16px 48px rgba(37, 99, 235, 0.12), 0 8px 24px rgba(37, 99, 235, 0.06);
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            /* space for bottom nav */;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: rgba(255, 255, 255, 0.80);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.50);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            padding: 12px 0;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+        }
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg);
+            padding: 6px 16px 6px 14px;
+            border-radius: 40px;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.2px;
+            flex-shrink: 0;
+        }
+        .header-center .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: inline-block;
+            animation: pulse-dot 2s infinite;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.20);
+            cursor: default;
+            user-select: none;
+        }
+
+        /* ===== WELCOME ===== */
+        .welcome {
+            padding: 32px 0 12px 0;
+        }
+
+        .welcome h1 {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .welcome h1 .wave {
+            font-size: 28px;
+            display: inline-block;
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+        }
+        @keyframes wave {
+            0% {
+                transform: rotate(0deg);
+            }
+            10% {
+                transform: rotate(14deg);
+            }
+            20% {
+                transform: rotate(-8deg);
+            }
+            30% {
+                transform: rotate(14deg);
+            }
+            40% {
+                transform: rotate(-4deg);
+            }
+            50% {
+                transform: rotate(10deg);
+            }
+            60%,
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .welcome p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-weight: 400;
+            letter-spacing: 0.1px;
+        }
+
+        /* ===== SUBJECTS SECTION ===== */
+        .subjects-section {
+            padding: 20px 0 8px 0;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 18px;
+            letter-spacing: -0.2px;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* ===== SUBJECT CARD ===== */
+        .subject-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px 18px 18px 18px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .subject-card:active {
+            transform: scale(0.97);
+            transition-duration: 0.08s;
+        }
+
+        .subject-card-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .subject-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            transition: background var(--transition), border-color var(--transition);
+        }
+
+        .subject-card:hover .subject-icon {
+            background: rgba(37, 99, 235, 0.06);
+            border-color: var(--primary-light);
+        }
+
+        .subject-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            letter-spacing: -0.1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .subject-arrow {
+            color: var(--text-muted);
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: transform var(--transition), color var(--transition);
+        }
+
+        .subject-card:hover .subject-arrow {
+            transform: translateX(4px);
+            color: var(--primary);
+        }
+
+        /* ===== CHAPTER MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.40);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 100;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-sheet {
+            background: var(--card-bg);
+            border-radius: var(--radius) var(--radius) 0 0;
+            max-width: 560px;
+            width: 100%;
+            max-height: 82vh;
+            padding: 28px 24px 32px 24px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            border-top: 1px solid var(--border);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header h2 .modal-subject-icon {
+            font-size: 24px;
+        }
+
+        .modal-close {
+            background: var(--bg);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: background var(--transition), color var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
+        }
+
+        .modal-close:hover {
+            background: #F1F5F9;
+            color: var(--text-primary);
+        }
+
+        .chapter-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-radius: 14px;
+            background: var(--bg);
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .chapter-item:hover {
+            background: var(--card-bg);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chapter-item:active {
+            transform: scale(0.98);
+            transition-duration: 0.08s;
+        }
+
+        .chapter-item .chapter-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .chapter-item .chapter-arrow {
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: transform var(--transition), color var(--transition);
+        }
+
+        .chapter-item:hover .chapter-arrow {
+            transform: translateX(4px);
+            color: var(--primary);
+        }
+
+        .modal-empty {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            padding: 8px 0 env(safe-area-inset-bottom, 8px) 0;
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            max-width: 1120px;
+            margin: 0 auto;
+            border-radius: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 500;
+            padding: 6px 16px;
+            border-radius: 12px;
+            transition: color var(--transition), background var(--transition);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            background: transparent;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            min-width: 60px;
+        }
+
+        .nav-item .nav-icon {
+            font-size: 22px;
+            line-height: 1;
+            transition: transform var(--transition);
+        }
+
+        .nav-item .nav-label {
+            font-size: 10px;
+            letter-spacing: 0.2px;
+        }
+
+        .nav-item:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item.active .nav-icon {
+            transform: scale(1.05);
+        }
+
+        .nav-item:active {
+            transform: scale(0.94);
+            transition-duration: 0.08s;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 480px) {
+            .subjects-grid {
+                gap: 18px;
+            }
+            .subject-card {
+                padding: 24px 22px 22px 22px;
+            }
+            .subject-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 26px;
+                border-radius: 16px;
+            }
+            .subject-name {
+                font-size: 16px;
+            }
+            .welcome h1 {
+                font-size: 30px;
+            }
+            .welcome p {
+                font-size: 16px;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .subjects-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+            .container {
+                padding: 0 32px;
+            }
+            .header-inner {
+                padding: 0 32px;
+            }
+            .modal-sheet {
+                border-radius: var(--radius);
+                margin-bottom: 40px;
+                max-height: 70vh;
+            }
+            .modal-overlay {
+                align-items: center;
+            }
+            @keyframes slideUp {
+                from {
+                    transform: translateY(20px) scale(0.97);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0) scale(1);
+                    opacity: 1;
+                }
+            }
+        }
+
+        @media (min-width: 900px) {
+            .subjects-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
+            }
+            .subject-card {
+                padding: 28px 24px 24px 24px;
+            }
+            .subject-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 28px;
+                border-radius: 18px;
+            }
+            .subject-name {
+                font-size: 17px;
+            }
+            .welcome {
+                padding: 40px 0 16px 0;
+            }
+            .welcome h1 {
+                font-size: 34px;
+            }
+            .welcome p {
+                font-size: 17px;
+            }
+            .section-title {
+                font-size: 20px;
+                margin-bottom: 22px;
+            }
+            .bottom-nav {
+                padding: 10px 0 env(safe-area-inset-bottom, 10px) 0;
+                border-radius: 20px 20px 0 0;
+                max-width: 480px;
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 12px;
+                box-shadow: var(--shadow-lg);
+                border: 1px solid var(--border);
+                border-bottom: none;
+            }
+            body {
+                padding-bottom: 100px;
+            }
+            .header {
+                padding: 16px 0;
+            }
+        }
+
+        @media (min-width: 1120px) {
+            .subjects-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 28px;
+            }
+            .container {
+                padding: 0 40px;
+            }
+            .header-inner {
+                padding: 0 40px;
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* ===== TOAST / FEEDBACK ===== */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text-primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 200;
+            pointer-events: none;
+            font-family: 'Poppins', sans-serif;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (min-width: 900px) {
+            .toast {
+                bottom: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header" role="banner">
+        <div class="header-inner">
+            <a href="#" class="logo" aria-label="Examiyo Home">
+                <span class="logo-icon">E</span>
+                <span class="logo-text">Exami<span>yo</span></span>
+            </a>
+
+            <div class="header-center" aria-label="Current board and class">
+                <span class="badge-dot" aria-hidden="true"></span>
+                UP Board Class 10
+            </div>
+
+            <div class="header-avatar" aria-label="Student avatar">K</div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="container" role="main">
+
+        <!-- Welcome -->
+        <section class="welcome">
+            <h1>
+                <span class="wave" aria-hidden="true">👋</span>
+                Hello, Krishna
+            </h1>
+            <p>Practice chapter-wise MCQ tests and improve your score.</p>
+        </section>
+
+        <!-- Subjects -->
+        <section class="subjects-section" aria-labelledby="subjects-title">
+            <h2 id="subjects-title" class="section-title">Choose a Subject</h2>
+
+            <div class="subjects-grid" role="list">
+                <!-- Each card is clickable and opens the chapter modal -->
+                <div class="subject-card" role="listitem" data-subject="Hindi" data-icon="📘">
+                    <div class="subject-card-left">
+                        <span class="subject-icon" aria-hidden="true">📘</span>
+                        <span class="subject-name">Hindi</span>
+                    </div>
+                    <span class="subject-arrow" aria-hidden="true">→</span>
+                </div>
+
+                <div class="subject-card" role="listitem" data-subject="English" data-icon="📗">
+                    <div class="subject-card-left">
+                        <span class="subject-icon" aria-hidden="true">📗</span>
+                        <span class="subject-name">English</span>
+                    </div>
+                    <span class="subject-arrow" aria-hidden="true">→</span>
+                </div>
+
+                <div class="subject-card" role="listitem" data-subject="Mathematics" data-icon="📐">
+                    <div class="subject-card-left">
+                        <span class="subject-icon" aria-hidden="true">📐</span>
+                        <span class="subject-name">Mathematics</span>
+                    </div>
+                    <span class="subject-arrow" aria-hidden="true">→</span>
+                </div>
+
+                <div class="subject-card" role="listitem" data-subject="Science" data-icon="🧪">
+                    <div class="subject-card-left">
+                        <span class="subject-icon" aria-hidden="true">🧪</span>
+                        <span class="subject-name">Science</span>
+                    </div>
+                    <span class="subject-arrow" aria-hidden="true">→</span>
+                </div>
+
+                <div class="subject-card" role="listitem" data-subject="Social Science" data-icon="🌍">
+                    <div class="subject-card-left">
+                        <span class="subject-icon" aria-hidden="true">🌍</span>
+                        <span class="subject-name">Social Science</span>
+                    </div>
+                    <span class="subject-arrow" aria-hidden="true">→</span>
+                </div>
+
+                <div class="subject-card" role="listitem" data-subject="Sanskrit" data-icon="🕉">
+                    <div class="subject-card-left">
+                        <span class="subject-icon" aria-hidden="true">🕉</span>
+                        <span class="subject-name">Sanskrit</span>
+                    </div>
+                    <span class="subject-arrow" aria-hidden="true">→</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== CHAPTER MODAL ===== -->
+    <div class="modal-overlay" id="chapterModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-sheet">
+            <div class="modal-header">
+                <h2 id="modal-title">
+                    <span class="modal-subject-icon" id="modalSubjectIcon" aria-hidden="true">📘</span>
+                    <span id="modalSubjectName">Hindi</span>
+                </h2>
+                <button class="modal-close" id="modalClose" aria-label="Close chapter list">✕</button>
+            </div>
+            <div id="chapterList" role="list">
+                <!-- dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BOTTOM NAVIGATION ===== -->
+    <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
+        <button class="nav-item active" data-nav="home" aria-current="page">
+            <span class="nav-icon" aria-hidden="true">🏠</span>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" data-nav="results">
+            <span class="nav-icon" aria-hidden="true">📊</span>
+            <span class="nav-label">Results</span>
+        </button>
+        <button class="nav-item" data-nav="profile">
+            <span class="nav-icon" aria-hidden="true">👤</span>
+            <span class="nav-label">Profile</span>
+        </button>
+    </nav>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- DATA -----
+            const chaptersData = {
+                'Hindi': ['गद्य खंड', 'पद्य खंड', 'व्याकरण', 'रचना'],
+                'English': ['Prose', 'Poetry', 'Grammar', 'Composition'],
+                'Mathematics': ['Number Systems', 'Algebra', 'Geometry', 'Statistics'],
+                'Science': ['Physics', 'Chemistry', 'Biology', 'Environmental'],
+                'Social Science': ['History', 'Geography', 'Civics', 'Economics'],
+                'Sanskrit': ['गद्य', 'पद्य', 'व्याकरण', 'रचना']
+            };
+
+            // ----- DOM refs -----
+            const modal = document.getElementById('chapterModal');
+            const modalClose = document.getElementById('modalClose');
+            const modalSubjectIcon = document.getElementById('modalSubjectIcon');
+            const modalSubjectName = document.getElementById('modalSubjectName');
+            const chapterList = document.getElementById('chapterList');
+            const toast = document.getElementById('toast');
+            let toastTimer = null;
+
+            // ----- Helpers -----
+            function showToast(message) {
+                if (toastTimer) {
+                    clearTimeout(toastTimer);
+                    toast.classList.remove('show');
+                }
+                // Force reflow
+                void toast.offsetWidth;
+                toast.textContent = message;
+                toast.classList.add('show');
+                toastTimer = setTimeout(() => {
+                    toast.classList.remove('show');
+                    toastTimer = null;
+                }, 2000);
+            }
+
+            function openModal(subject, icon) {
+                const chapters = chaptersData[subject] || ['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4'];
+                modalSubjectIcon.textContent = icon || '📘';
+                modalSubjectName.textContent = subject;
+
+                chapterList.innerHTML = '';
+                chapters.forEach((chapter, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'chapter-item';
+                    item.setAttribute('role', 'listitem');
+                    item.setAttribute('tabindex', '0');
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'chapter-name';
+                    nameSpan.textContent = chapter;
+                    const arrowSpan = document.createElement('span');
+                    arrowSpan.className = 'chapter-arrow';
+                    arrowSpan.textContent = '→';
+                    item.appendChild(nameSpan);
+                    item.appendChild(arrowSpan);
+
+                    // Click -> start test
+                    item.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        closeModal();
+                        showToast(`📝 Starting "${chapter}" test…`);
+                    });
+
+                    // Keyboard support
+                    item.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            item.click();
+                        }
+                    });
+
+                    chapterList.appendChild(item);
+                });
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // ----- Subject card clicks -----
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    const subject = this.dataset.subject || 'Subject';
+                    const icon = this.dataset.icon || '📘';
+                    openModal(subject, icon);
+                });
+
+                // Keyboard support
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+                card.setAttribute('tabindex', '0');
+            });
+
+            // ----- Modal close -----
+            modalClose.addEventListener('click', closeModal);
+
+            // Click overlay to close
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            // Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            // ----- Bottom nav -----
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                    const label = this.querySelector('.nav-label')?.textContent || 'page';
+                    showToast(`📱 Navigating to ${label}`);
+                });
+            });
+
+            // ----- Prevent zoom on double-tap (iOS) -----
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
+
+            console.log('📚 Examiyo · UP Board Class 10 · Ready');
+        })();
+    </script>
+
+</body>
+</html>
