@@ -47,10 +47,8 @@
             color: var(--text-primary);
             min-height: 100vh;
             padding-bottom: 80px;
-            /* space for bottom nav */;
         }
 
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -66,7 +64,6 @@
             background: var(--text-muted);
         }
 
-        /* ===== CONTAINER ===== */
         .container {
             max-width: 1120px;
             margin: 0 auto;
@@ -264,6 +261,8 @@
             position: relative;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
+            text-decoration: none;
+            color: inherit;
         }
 
         .subject-card:hover {
@@ -323,150 +322,6 @@
         .subject-card:hover .subject-arrow {
             transform: translateX(4px);
             color: var(--primary);
-        }
-
-        /* ===== CHAPTER MODAL ===== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.40);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            z-index: 100;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-            padding: 20px;
-            animation: fadeIn 0.25s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal-sheet {
-            background: var(--card-bg);
-            border-radius: var(--radius) var(--radius) 0 0;
-            max-width: 560px;
-            width: 100%;
-            max-height: 82vh;
-            padding: 28px 24px 32px 24px;
-            box-shadow: var(--shadow-lg);
-            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto;
-            border-top: 1px solid var(--border);
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .modal-header h2 {
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: -0.2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .modal-header h2 .modal-subject-icon {
-            font-size: 24px;
-        }
-
-        .modal-close {
-            background: var(--bg);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 18px;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: background var(--transition), color var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border);
-        }
-
-        .modal-close:hover {
-            background: #F1F5F9;
-            color: var(--text-primary);
-        }
-
-        .chapter-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 16px;
-            border-radius: 14px;
-            background: var(--bg);
-            margin-bottom: 10px;
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .chapter-item:hover {
-            background: var(--card-bg);
-            border-color: var(--primary);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .chapter-item:active {
-            transform: scale(0.98);
-            transition-duration: 0.08s;
-        }
-
-        .chapter-item .chapter-name {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .chapter-item .chapter-arrow {
-            color: var(--text-muted);
-            font-size: 14px;
-            transition: transform var(--transition), color var(--transition);
-        }
-
-        .chapter-item:hover .chapter-arrow {
-            transform: translateX(4px);
-            color: var(--primary);
-        }
-
-        .modal-empty {
-            text-align: center;
-            padding: 32px 0;
-            color: var(--text-secondary);
-            font-size: 14px;
         }
 
         /* ===== BOTTOM NAV ===== */
@@ -537,6 +392,33 @@
             transition-duration: 0.08s;
         }
 
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--text-primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 200;
+            pointer-events: none;
+            font-family: 'Poppins', sans-serif;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (min-width: 480px) {
             .subjects-grid {
@@ -572,24 +454,6 @@
             }
             .header-inner {
                 padding: 0 32px;
-            }
-            .modal-sheet {
-                border-radius: var(--radius);
-                margin-bottom: 40px;
-                max-height: 70vh;
-            }
-            .modal-overlay {
-                align-items: center;
-            }
-            @keyframes slideUp {
-                from {
-                    transform: translateY(20px) scale(0.97);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateY(0) scale(1);
-                    opacity: 1;
-                }
             }
         }
 
@@ -640,6 +504,9 @@
             .header {
                 padding: 16px 0;
             }
+            .toast {
+                bottom: 120px;
+            }
         }
 
         @media (min-width: 1120px) {
@@ -654,51 +521,6 @@
                 padding: 0 40px;
             }
         }
-
-        /* ===== UTILITY ===== */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
-
-        /* ===== TOAST / FEEDBACK ===== */
-        .toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--text-primary);
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: var(--shadow-lg);
-            opacity: 0;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            z-index: 200;
-            pointer-events: none;
-            font-family: 'Poppins', sans-serif;
-            max-width: 90%;
-            text-align: center;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        @media (min-width: 900px) {
-            .toast {
-                bottom: 120px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -706,7 +528,7 @@
     <!-- ===== HEADER ===== -->
     <header class="header" role="banner">
         <div class="header-inner">
-            <a href="#" class="logo" aria-label="Examiyo Home">
+            <a href="index.html" class="logo" aria-label="Examiyo Home">
                 <span class="logo-icon">E</span>
                 <span class="logo-text">Exami<span>yo</span></span>
             </a>
@@ -737,74 +559,58 @@
             <h2 id="subjects-title" class="section-title">Choose a Subject</h2>
 
             <div class="subjects-grid" role="list">
-                <!-- Each card is clickable and opens the chapter modal -->
-                <div class="subject-card" role="listitem" data-subject="Hindi" data-icon="📘">
+                <!-- Each card is a link to chapter-list.html with subject parameter -->
+                <a href="chapter-list.html?subject=Hindi" class="subject-card" role="listitem" data-subject="Hindi" data-icon="📘">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">📘</span>
                         <span class="subject-name">Hindi</span>
                     </div>
                     <span class="subject-arrow" aria-hidden="true">→</span>
-                </div>
+                </a>
 
-                <div class="subject-card" role="listitem" data-subject="English" data-icon="📗">
+                <a href="chapter-list.html?subject=English" class="subject-card" role="listitem" data-subject="English" data-icon="📗">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">📗</span>
                         <span class="subject-name">English</span>
                     </div>
                     <span class="subject-arrow" aria-hidden="true">→</span>
-                </div>
+                </a>
 
-                <div class="subject-card" role="listitem" data-subject="Mathematics" data-icon="📐">
+                <a href="chapter-list.html?subject=Mathematics" class="subject-card" role="listitem" data-subject="Mathematics" data-icon="📐">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">📐</span>
                         <span class="subject-name">Mathematics</span>
                     </div>
                     <span class="subject-arrow" aria-hidden="true">→</span>
-                </div>
+                </a>
 
-                <div class="subject-card" role="listitem" data-subject="Science" data-icon="🧪">
+                <a href="chapter-list.html?subject=Science" class="subject-card" role="listitem" data-subject="Science" data-icon="🧪">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">🧪</span>
                         <span class="subject-name">Science</span>
                     </div>
                     <span class="subject-arrow" aria-hidden="true">→</span>
-                </div>
+                </a>
 
-                <div class="subject-card" role="listitem" data-subject="Social Science" data-icon="🌍">
+                <a href="chapter-list.html?subject=Social%20Science" class="subject-card" role="listitem" data-subject="Social Science" data-icon="🌍">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">🌍</span>
                         <span class="subject-name">Social Science</span>
                     </div>
                     <span class="subject-arrow" aria-hidden="true">→</span>
-                </div>
+                </a>
 
-                <div class="subject-card" role="listitem" data-subject="Sanskrit" data-icon="🕉">
+                <a href="chapter-list.html?subject=Sanskrit" class="subject-card" role="listitem" data-subject="Sanskrit" data-icon="🕉">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">🕉</span>
                         <span class="subject-name">Sanskrit</span>
                     </div>
                     <span class="subject-arrow" aria-hidden="true">→</span>
-                </div>
+                </a>
             </div>
         </section>
 
     </main>
-
-    <!-- ===== CHAPTER MODAL ===== -->
-    <div class="modal-overlay" id="chapterModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal-sheet">
-            <div class="modal-header">
-                <h2 id="modal-title">
-                    <span class="modal-subject-icon" id="modalSubjectIcon" aria-hidden="true">📘</span>
-                    <span id="modalSubjectName">Hindi</span>
-                </h2>
-                <button class="modal-close" id="modalClose" aria-label="Close chapter list">✕</button>
-            </div>
-            <div id="chapterList" role="list">
-                <!-- dynamically populated -->
-            </div>
-        </div>
-    </div>
 
     <!-- ===== BOTTOM NAVIGATION ===== -->
     <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
@@ -825,37 +631,18 @@
     <!-- ===== TOAST ===== -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <!-- ===== SCRIPT ===== -->
     <script>
         (function() {
             'use strict';
 
-            // ----- DATA -----
-            const chaptersData = {
-                'Hindi': ['गद्य खंड', 'पद्य खंड', 'व्याकरण', 'रचना'],
-                'English': ['Prose', 'Poetry', 'Grammar', 'Composition'],
-                'Mathematics': ['Number Systems', 'Algebra', 'Geometry', 'Statistics'],
-                'Science': ['Physics', 'Chemistry', 'Biology', 'Environmental'],
-                'Social Science': ['History', 'Geography', 'Civics', 'Economics'],
-                'Sanskrit': ['गद्य', 'पद्य', 'व्याकरण', 'रचना']
-            };
-
-            // ----- DOM refs -----
-            const modal = document.getElementById('chapterModal');
-            const modalClose = document.getElementById('modalClose');
-            const modalSubjectIcon = document.getElementById('modalSubjectIcon');
-            const modalSubjectName = document.getElementById('modalSubjectName');
-            const chapterList = document.getElementById('chapterList');
             const toast = document.getElementById('toast');
             let toastTimer = null;
 
-            // ----- Helpers -----
             function showToast(message) {
                 if (toastTimer) {
                     clearTimeout(toastTimer);
                     toast.classList.remove('show');
                 }
-                // Force reflow
                 void toast.offsetWidth;
                 toast.textContent = message;
                 toast.classList.add('show');
@@ -865,89 +652,7 @@
                 }, 2000);
             }
 
-            function openModal(subject, icon) {
-                const chapters = chaptersData[subject] || ['Chapter 1', 'Chapter 2', 'Chapter 3', 'Chapter 4'];
-                modalSubjectIcon.textContent = icon || '📘';
-                modalSubjectName.textContent = subject;
-
-                chapterList.innerHTML = '';
-                chapters.forEach((chapter, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'chapter-item';
-                    item.setAttribute('role', 'listitem');
-                    item.setAttribute('tabindex', '0');
-                    const nameSpan = document.createElement('span');
-                    nameSpan.className = 'chapter-name';
-                    nameSpan.textContent = chapter;
-                    const arrowSpan = document.createElement('span');
-                    arrowSpan.className = 'chapter-arrow';
-                    arrowSpan.textContent = '→';
-                    item.appendChild(nameSpan);
-                    item.appendChild(arrowSpan);
-
-                    // Click -> start test
-                    item.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        closeModal();
-                        showToast(`📝 Starting "${chapter}" test…`);
-                    });
-
-                    // Keyboard support
-                    item.addEventListener('keydown', function(e) {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            item.click();
-                        }
-                    });
-
-                    chapterList.appendChild(item);
-                });
-
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeModal() {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-
-            // ----- Subject card clicks -----
-            document.querySelectorAll('.subject-card').forEach(card => {
-                card.addEventListener('click', function(e) {
-                    const subject = this.dataset.subject || 'Subject';
-                    const icon = this.dataset.icon || '📘';
-                    openModal(subject, icon);
-                });
-
-                // Keyboard support
-                card.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-                card.setAttribute('tabindex', '0');
-            });
-
-            // ----- Modal close -----
-            modalClose.addEventListener('click', closeModal);
-
-            // Click overlay to close
-            modal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeModal();
-                }
-            });
-
-            // Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && modal.classList.contains('active')) {
-                    closeModal();
-                }
-            });
-
-            // ----- Bottom nav -----
+            // Bottom nav
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => {
                 item.addEventListener('click', function() {
@@ -958,7 +663,7 @@
                 });
             });
 
-            // ----- Prevent zoom on double-tap (iOS) -----
+            // Prevent zoom on double-tap (iOS)
             let lastTouchEnd = 0;
             document.addEventListener('touchend', function(e) {
                 const now = Date.now();
