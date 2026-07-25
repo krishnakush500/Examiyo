@@ -119,6 +119,10 @@
             border-radius: 20px;
         }
 
+        .examiyo-header .header-sub i {
+            margin-right: 6px;
+        }
+
         /* ===== CARDS ===== */
         .card {
             background-color: var(--white);
@@ -256,6 +260,17 @@
             width: 16px;
         }
 
+        .chapter-badge {
+            display: inline-block;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-blue);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
         /* ===== FORM ===== */
         .form-group {
             margin-bottom: 16px;
@@ -318,6 +333,11 @@
             font-size: 1.1rem;
             font-weight: 600;
             color: var(--primary-blue);
+        }
+
+        .test-header-bar .test-info .test-subject {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
         }
 
         .test-header-bar .test-info .student-info {
@@ -722,6 +742,13 @@
             <div class="tests-grid" id="testsContainer">
                 <!-- Tests loaded dynamically -->
             </div>
+
+            <!-- Back to Chapters Button -->
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="chapter-list.html?subject=English" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Chapters
+                </a>
+            </div>
         </div>
     </div>
 
@@ -740,7 +767,7 @@
 
             <div class="card">
                 <h2 class="card-title">👤 Enter Your Details</h2>
-                <p class="card-subtitle">Please fill in your information to start the test.</p>
+                <p class="card-subtitle" id="testInfoMessage">Please fill in your information to start the test.</p>
 
                 <form id="studentForm">
                     <div class="form-group">
@@ -772,6 +799,7 @@
             <div class="test-header-bar">
                 <div class="test-info">
                     <div class="test-name" id="testName">Chapter Test</div>
+                    <div class="test-subject" id="testSubject">📖 Subject: English</div>
                     <div class="student-info">
                         <span id="displayName">Student</span> | 
                         <span id="displayRoll">Roll No.</span>
@@ -829,6 +857,7 @@
                     <div class="info-item"><strong>Student Name:</strong> <span id="resultName">-</span></div>
                     <div class="info-item"><strong>Roll Number:</strong> <span id="resultRoll">-</span></div>
                     <div class="info-item"><strong>Test Name:</strong> <span id="resultTestName">-</span></div>
+                    <div class="info-item"><strong>Subject:</strong> <span id="resultSubject">-</span></div>
                     <div class="info-item"><strong>Date:</strong> <span id="resultDate">-</span></div>
                 </div>
 
@@ -907,11 +936,51 @@
 
         // ===== DEMO TESTS =====
         const DEMO_TESTS = [
-            { id: 'demo1', testName: 'English Chapter 1: Prose', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS },
-            { id: 'demo2', testName: 'English Chapter 2: Poetry', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS.map(q => ({...q})) },
-            { id: 'demo3', testName: 'English Chapter 3: Grammar', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS.map(q => ({...q})) },
-            { id: 'demo4', testName: 'English Chapter 4: Composition', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS.map(q => ({...q})) }
+            { id: 'demo1', testName: 'Prose', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS },
+            { id: 'demo2', testName: 'Poetry', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS.map(q => ({...q, text: q.text + " (Poetry)"})) },
+            { id: 'demo3', testName: 'Grammar', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS.map(q => ({...q, text: q.text + " (Grammar)"})) },
+            { id: 'demo4', testName: 'Composition', totalQuestions: 5, totalMarks: 10, duration: 10, questions: DEMO_QUESTIONS.map(q => ({...q, text: q.text + " (Composition)"})) }
         ];
+
+        // ===== CHAPTER TO TEST MAPPING =====
+        const CHAPTER_TEST_MAP = {
+            'Prose': 'demo1',
+            'Poetry': 'demo2',
+            'Grammar': 'demo3',
+            'Composition': 'demo4',
+            'Letter Writing': 'demo1',
+            'Comprehension': 'demo2',
+            'गद्य खंड': 'demo1',
+            'पद्य खंड': 'demo2',
+            'व्याकरण': 'demo3',
+            'रचना': 'demo4',
+            'अनुच्छेद लेखन': 'demo1',
+            'पत्र लेखन': 'demo2',
+            'Number Systems': 'demo1',
+            'Algebra': 'demo2',
+            'Geometry': 'demo3',
+            'Statistics': 'demo4',
+            'Trigonometry': 'demo1',
+            'Mensuration': 'demo2',
+            'Physics': 'demo1',
+            'Chemistry': 'demo2',
+            'Biology': 'demo3',
+            'Environmental': 'demo4',
+            'Space Science': 'demo1',
+            'Matter': 'demo2',
+            'History': 'demo1',
+            'Geography': 'demo2',
+            'Civics': 'demo3',
+            'Economics': 'demo4',
+            'Culture': 'demo1',
+            'Environment': 'demo2',
+            'गद्य': 'demo1',
+            'पद्य': 'demo2',
+            'व्याकरण': 'demo3',
+            'रचना': 'demo4',
+            'अनुवाद': 'demo1',
+            'श्लोक': 'demo2'
+        };
 
         // ===== GLOBAL STATE =====
         let currentPage = 'test-list';
@@ -926,6 +995,11 @@
         let resultId = '';
         let isSubmitting = false;
 
+        // URL Parameters
+        let urlChapter = '';
+        let urlSubject = '';
+        let urlTestId = '';
+
         // ===== PAGE NAVIGATION =====
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -934,18 +1008,68 @@
             window.scrollTo(0, 0);
         }
 
+        // ===== GET URL PARAMETERS =====
+        function getURLParams() {
+            const params = new URLSearchParams(window.location.search);
+            urlChapter = params.get('chapter') || '';
+            urlSubject = params.get('subject') || 'English';
+            urlTestId = params.get('test') || '';
+            
+            console.log(`📝 Chapter: ${urlChapter}, Subject: ${urlSubject}, Test: ${urlTestId}`);
+        }
+
         // ===== LOAD TESTS =====
         function loadTests() {
-            tests = DEMO_TESTS;
+            getURLParams();
+            
+            // If chapter is provided, filter tests
+            let filteredTests = [...DEMO_TESTS];
+            
+            if (urlChapter) {
+                // Get test ID from mapping
+                const mappedTestId = CHAPTER_TEST_MAP[urlChapter] || 'demo1';
+                filteredTests = DEMO_TESTS.filter(t => t.id === mappedTestId);
+                
+                // Update test names with chapter
+                filteredTests = filteredTests.map(t => ({
+                    ...t,
+                    testName: `${urlChapter} Test`
+                }));
+            }
+            
+            tests = filteredTests.length > 0 ? filteredTests : DEMO_TESTS;
+            
             const container = document.getElementById('testsContainer');
+            
+            // Show chapter info if available
+            let chapterInfo = '';
+            if (urlChapter) {
+                chapterInfo = `
+                    <div class="card" style="border-left-color: var(--primary-orange);">
+                        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                            <span style="font-size: 1.5rem;">📖</span>
+                            <div>
+                                <strong style="color: var(--primary-blue);">${urlSubject}</strong>
+                                <span style="color: var(--dark-gray); margin: 0 8px;">•</span>
+                                <span style="font-weight: 600;">${urlChapter}</span>
+                            </div>
+                            <span style="background: var(--primary-orange); color: white; padding: 2px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">
+                                ${tests.length} Test${tests.length > 1 ? 's' : ''} Available
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }
 
-            container.innerHTML = tests.map(test => `
+            container.innerHTML = chapterInfo + tests.map(test => `
                 <div class="card test-card" data-test-id="${test.id}">
+                    <div class="chapter-badge">${urlChapter || 'General'}</div>
                     <div class="test-name">${test.testName}</div>
                     <div class="test-meta">
                         <span><i class="fas fa-question-circle"></i> ${test.totalQuestions} Qs</span>
                         <span><i class="fas fa-star"></i> ${test.totalMarks} Marks</span>
                         <span><i class="fas fa-clock"></i> ${test.duration} min</span>
+                        <span><i class="fas fa-book"></i> ${urlSubject}</span>
                     </div>
                     <button class="btn btn-primary btn-block btn-sm start-test-btn" data-test-id="${test.id}">
                         Start Test
@@ -976,6 +1100,15 @@
             
             studentAnswers = {};
             currentIndex = 0;
+            
+            // Update student details page with test info
+            const infoMsg = document.getElementById('testInfoMessage');
+            if (urlChapter) {
+                infoMsg.textContent = `📖 ${urlSubject} • ${urlChapter} • ${currentTest.testName}`;
+            } else {
+                infoMsg.textContent = `📝 ${currentTest.testName}`;
+            }
+            
             showPage('student-details');
         }
 
@@ -1009,7 +1142,14 @@
         function startTestScreen() {
             currentQuestions = currentTest.questions || DEMO_QUESTIONS;
 
-            document.getElementById('testName').textContent = currentTest.testName;
+            // Update test name with chapter info
+            let displayName = currentTest.testName;
+            if (urlChapter) {
+                displayName = `${urlChapter}`;
+            }
+            
+            document.getElementById('testName').textContent = displayName;
+            document.getElementById('testSubject').textContent = `📖 ${urlSubject} • ${currentTest.testName}`;
             document.getElementById('displayName').textContent = studentDetails.name;
             document.getElementById('displayRoll').textContent = studentDetails.rollNumber;
 
@@ -1169,7 +1309,8 @@
                     // Show result
                     document.getElementById('resultName').textContent = studentDetails.name;
                     document.getElementById('resultRoll').textContent = studentDetails.rollNumber;
-                    document.getElementById('resultTestName').textContent = currentTest.testName;
+                    document.getElementById('resultTestName').textContent = urlChapter || currentTest.testName;
+                    document.getElementById('resultSubject').textContent = urlSubject || 'General';
                     document.getElementById('resultDate').textContent = new Date().toLocaleDateString('en-IN');
                     document.getElementById('resultId').textContent = resultId;
 
@@ -1293,8 +1434,9 @@
             loadTests();
             showPage('test-list');
 
-            console.log('📚 Examiyo Test System loaded with demo questions');
-            console.log(`📝 ${DEMO_TESTS.length} tests, ${DEMO_QUESTIONS.length} questions each`);
+            console.log('📚 Examiyo Test System loaded');
+            console.log(`📝 Chapter: ${urlChapter || 'None'}, Subject: ${urlSubject}`);
+            console.log(`📝 ${tests.length} tests available`);
         });
     </script>
 </body>
