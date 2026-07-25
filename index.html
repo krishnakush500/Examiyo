@@ -245,7 +245,6 @@
             gap: 14px;
         }
 
-        /* ===== SUBJECT CARD ===== */
         .subject-card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -521,6 +520,17 @@
                 padding: 0 40px;
             }
         }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
     </style>
 </head>
 <body>
@@ -528,7 +538,7 @@
     <!-- ===== HEADER ===== -->
     <header class="header" role="banner">
         <div class="header-inner">
-            <a href="index.html" class="logo" aria-label="Examiyo Home">
+            <a href="#" class="logo" aria-label="Examiyo Home">
                 <span class="logo-icon">E</span>
                 <span class="logo-text">Exami<span>yo</span></span>
             </a>
@@ -559,8 +569,7 @@
             <h2 id="subjects-title" class="section-title">Choose a Subject</h2>
 
             <div class="subjects-grid" role="list">
-                <!-- Each card is a link to chapter-list.html with subject parameter -->
-                <a href="chapter-list.html?subject=Hindi" class="subject-card" role="listitem" data-subject="Hindi" data-icon="📘">
+                <a href="chapter-list.html?subject=Hindi" class="subject-card" role="listitem">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">📘</span>
                         <span class="subject-name">Hindi</span>
@@ -568,7 +577,7 @@
                     <span class="subject-arrow" aria-hidden="true">→</span>
                 </a>
 
-                <a href="chapter-list.html?subject=English" class="subject-card" role="listitem" data-subject="English" data-icon="📗">
+                <a href="chapter-list.html?subject=English" class="subject-card" role="listitem">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">📗</span>
                         <span class="subject-name">English</span>
@@ -576,7 +585,7 @@
                     <span class="subject-arrow" aria-hidden="true">→</span>
                 </a>
 
-                <a href="chapter-list.html?subject=Mathematics" class="subject-card" role="listitem" data-subject="Mathematics" data-icon="📐">
+                <a href="chapter-list.html?subject=Mathematics" class="subject-card" role="listitem">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">📐</span>
                         <span class="subject-name">Mathematics</span>
@@ -584,7 +593,7 @@
                     <span class="subject-arrow" aria-hidden="true">→</span>
                 </a>
 
-                <a href="chapter-list.html?subject=Science" class="subject-card" role="listitem" data-subject="Science" data-icon="🧪">
+                <a href="chapter-list.html?subject=Science" class="subject-card" role="listitem">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">🧪</span>
                         <span class="subject-name">Science</span>
@@ -592,7 +601,7 @@
                     <span class="subject-arrow" aria-hidden="true">→</span>
                 </a>
 
-                <a href="chapter-list.html?subject=Social%20Science" class="subject-card" role="listitem" data-subject="Social Science" data-icon="🌍">
+                <a href="chapter-list.html?subject=Social%20Science" class="subject-card" role="listitem">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">🌍</span>
                         <span class="subject-name">Social Science</span>
@@ -600,7 +609,7 @@
                     <span class="subject-arrow" aria-hidden="true">→</span>
                 </a>
 
-                <a href="chapter-list.html?subject=Sanskrit" class="subject-card" role="listitem" data-subject="Sanskrit" data-icon="🕉">
+                <a href="chapter-list.html?subject=Sanskrit" class="subject-card" role="listitem">
                     <div class="subject-card-left">
                         <span class="subject-icon" aria-hidden="true">🕉</span>
                         <span class="subject-name">Sanskrit</span>
@@ -673,7 +682,7 @@
                 lastTouchEnd = now;
             }, { passive: false });
 
-            console.log('📚 Examiyo · UP Board Class 10 · Ready');
+            console.log('📚 Examiyo · Homepage ready');
         })();
     </script>
 
