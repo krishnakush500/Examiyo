@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
-        /* ===== RESET & BASE ===== */
         *,
         *::before,
         *::after {
@@ -49,7 +48,6 @@
             padding-bottom: 80px;
         }
 
-        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -65,7 +63,6 @@
             background: var(--text-muted);
         }
 
-        /* ===== CONTAINER ===== */
         .container {
             max-width: 1120px;
             margin: 0 auto;
@@ -198,6 +195,7 @@
             border-radius: 10px;
             transition: color var(--transition), transform var(--transition);
             -webkit-tap-highlight-color: transparent;
+            text-decoration: none;
         }
 
         .back-btn:hover {
@@ -278,7 +276,6 @@
             border: 1px solid var(--border);
         }
 
-        /* ===== CHAPTER CARD ===== */
         .chapters-list {
             display: flex;
             flex-direction: column;
@@ -586,7 +583,6 @@
             }
         }
 
-        /* ===== UTILITY ===== */
         .sr-only {
             position: absolute;
             width: 1px;
@@ -598,7 +594,6 @@
             border: 0;
         }
 
-        /* ===== ANIMATIONS ===== */
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -652,7 +647,7 @@
     <!-- ===== HEADER ===== -->
     <header class="header" role="banner">
         <div class="header-inner">
-            <a href="#" class="logo" aria-label="Examiyo Home">
+            <a href="index.html" class="logo" aria-label="Examiyo Home">
                 <span class="logo-icon">E</span>
                 <span class="logo-text">Exami<span>yo</span></span>
             </a>
@@ -671,10 +666,10 @@
 
         <!-- Back Button & Subject Hero -->
         <div class="back-row">
-            <button class="back-btn" id="backBtn" aria-label="Go back to subjects">
+            <a href="index.html" class="back-btn" aria-label="Go back to subjects">
                 <span class="back-arrow" aria-hidden="true">←</span>
                 Back to Subjects
-            </button>
+            </a>
         </div>
 
         <div class="subject-hero">
@@ -701,11 +696,11 @@
 
     <!-- ===== BOTTOM NAVIGATION ===== -->
     <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
-        <button class="nav-item active" data-nav="home" aria-current="page">
+        <button class="nav-item" data-nav="home">
             <span class="nav-icon" aria-hidden="true">🏠</span>
             <span class="nav-label">Home</span>
         </button>
-        <button class="nav-item" data-nav="results">
+        <button class="nav-item active" data-nav="results">
             <span class="nav-icon" aria-hidden="true">📊</span>
             <span class="nav-label">Results</span>
         </button>
@@ -718,12 +713,10 @@
     <!-- ===== TOAST ===== -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <!-- ===== SCRIPT ===== -->
     <script>
         (function() {
             'use strict';
 
-            // ----- DATA -----
             const subjectData = {
                 'Hindi': {
                     icon: '📘',
@@ -751,17 +744,14 @@
                 }
             };
 
-            // ----- DOM refs -----
             const subjectIcon = document.getElementById('subjectIcon');
             const subjectName = document.getElementById('subjectName');
             const subjectDesc = document.getElementById('subjectDesc');
             const chapterList = document.getElementById('chapterList');
             const chapterCount = document.getElementById('chapterCount');
-            const backBtn = document.getElementById('backBtn');
             const toast = document.getElementById('toast');
             let toastTimer = null;
 
-            // ----- Get subject from URL -----
             function getSubjectFromURL() {
                 const params = new URLSearchParams(window.location.search);
                 return params.get('subject') || 'Hindi';
@@ -770,7 +760,6 @@
             const currentSubject = getSubjectFromURL();
             const data = subjectData[currentSubject] || subjectData['Hindi'];
 
-            // ----- Render -----
             subjectIcon.textContent = data.icon;
             subjectName.textContent = currentSubject;
             subjectDesc.textContent = `Choose a chapter to start practicing`;
@@ -802,10 +791,10 @@
                 const meta = document.createElement('div');
                 meta.className = 'chapter-meta';
                 meta.innerHTML = `
-                    <span>📝 20 questions</span>
-                    <span class="dot"></span>
-                    <span>⏱️ 15 min</span>
-                `;
+                            <span>📝 20 questions</span>
+                            <span class="dot"></span>
+                            <span>⏱️ 15 min</span>
+                        `;
 
                 info.appendChild(name);
                 info.appendChild(meta);
@@ -820,13 +809,11 @@
                 card.appendChild(left);
                 card.appendChild(arrow);
 
-                // Click -> start test
                 card.addEventListener('click', function(e) {
                     e.stopPropagation();
                     showToast(`📝 Starting "${chapter}" test…`);
                 });
 
-                // Keyboard support
                 card.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
@@ -837,23 +824,6 @@
                 chapterList.appendChild(card);
             });
 
-            // ----- Back button -----
-            backBtn.addEventListener('click', function() {
-                window.location.href = 'index.html';
-            });
-
-            // ----- Bottom nav -----
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    navItems.forEach(n => n.classList.remove('active'));
-                    this.classList.add('active');
-                    const label = this.querySelector('.nav-label')?.textContent || 'page';
-                    showToast(`📱 Navigating to ${label}`);
-                });
-            });
-
-            // ----- Toast -----
             function showToast(message) {
                 if (toastTimer) {
                     clearTimeout(toastTimer);
@@ -868,7 +838,18 @@
                 }, 2000);
             }
 
-            // ----- Prevent zoom on double-tap (iOS) -----
+            // Bottom nav
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                    const label = this.querySelector('.nav-label')?.textContent || 'page';
+                    showToast(`📱 Navigating to ${label}`);
+                });
+            });
+
+            // Prevent zoom on double-tap (iOS)
             let lastTouchEnd = 0;
             document.addEventListener('touchend', function(e) {
                 const now = Date.now();
