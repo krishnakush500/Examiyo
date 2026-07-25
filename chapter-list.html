@@ -297,6 +297,8 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             position: relative;
+            text-decoration: none;
+            color: inherit;
         }
 
         .chapter-card:hover {
@@ -744,6 +746,52 @@
                 }
             };
 
+            // Chapter to test mapping (which test to open for which chapter)
+            const chapterTestMap = {
+                // English
+                'Prose': 'demo1',
+                'Poetry': 'demo2',
+                'Grammar': 'demo3',
+                'Composition': 'demo4',
+                'Letter Writing': 'demo1',
+                'Comprehension': 'demo2',
+                // Hindi
+                'गद्य खंड': 'demo1',
+                'पद्य खंड': 'demo2',
+                'व्याकरण': 'demo3',
+                'रचना': 'demo4',
+                'अनुच्छेद लेखन': 'demo1',
+                'पत्र लेखन': 'demo2',
+                // Mathematics
+                'Number Systems': 'demo1',
+                'Algebra': 'demo2',
+                'Geometry': 'demo3',
+                'Statistics': 'demo4',
+                'Trigonometry': 'demo1',
+                'Mensuration': 'demo2',
+                // Science
+                'Physics': 'demo1',
+                'Chemistry': 'demo2',
+                'Biology': 'demo3',
+                'Environmental': 'demo4',
+                'Space Science': 'demo1',
+                'Matter': 'demo2',
+                // Social Science
+                'History': 'demo1',
+                'Geography': 'demo2',
+                'Civics': 'demo3',
+                'Economics': 'demo4',
+                'Culture': 'demo1',
+                'Environment': 'demo2',
+                // Sanskrit
+                'गद्य': 'demo1',
+                'पद्य': 'demo2',
+                'व्याकरण': 'demo3',
+                'रचना': 'demo4',
+                'अनुवाद': 'demo1',
+                'श्लोक': 'demo2'
+            };
+
             const subjectIcon = document.getElementById('subjectIcon');
             const subjectName = document.getElementById('subjectName');
             const subjectDesc = document.getElementById('subjectDesc');
@@ -769,10 +817,15 @@
 
             chapterList.innerHTML = '';
             chapters.forEach((chapter, index) => {
-                const card = document.createElement('div');
+                const card = document.createElement('a');
                 card.className = 'chapter-card';
                 card.setAttribute('role', 'listitem');
                 card.setAttribute('tabindex', '0');
+
+                // Get test ID for this chapter
+                const testId = chapterTestMap[chapter] || 'demo1';
+                // Navigate to test.html with chapter and subject info
+                card.href = `test.html?chapter=${encodeURIComponent(chapter)}&subject=${encodeURIComponent(currentSubject)}&test=${testId}`;
 
                 const left = document.createElement('div');
                 left.className = 'chapter-card-left';
@@ -809,9 +862,11 @@
                 card.appendChild(left);
                 card.appendChild(arrow);
 
+                // Optional: show toast on click (but navigation will happen)
                 card.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    showToast(`📝 Starting "${chapter}" test…`);
+                    // Let the link do its job
+                    // Just show a brief toast
+                    showToast(`📝 Loading "${chapter}" test...`);
                 });
 
                 card.addEventListener('keydown', function(e) {
