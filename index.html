@@ -97,6 +97,25 @@
             gap: 8px;
             text-decoration: none;
             flex-shrink: 0;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .logo .admin-hint {
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+
+        .logo:hover .admin-hint {
+            opacity: 0.6;
         }
 
         .logo-icon {
@@ -119,7 +138,13 @@
             font-size: 20px;
             letter-spacing: -0.3px;
             color: var(--text-primary);
+            transition: color 0.3s;
         }
+
+        .logo-text:hover {
+            color: var(--primary);
+        }
+
         .logo-text span {
             color: var(--primary);
         }
@@ -323,6 +348,38 @@
             color: var(--primary);
         }
 
+        /* ===== ADMIN ACCESS BADGE ===== */
+        .admin-access-badge {
+            position: fixed;
+            bottom: 90px;
+            right: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 40;
+            transition: all 0.3s;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .admin-access-badge:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .admin-access-badge i {
+            font-size: 12px;
+        }
+
         /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             position: fixed;
@@ -454,6 +511,10 @@
             .header-inner {
                 padding: 0 32px;
             }
+            .admin-access-badge {
+                bottom: 100px;
+                right: 24px;
+            }
         }
 
         @media (min-width: 900px) {
@@ -506,6 +567,12 @@
             .toast {
                 bottom: 120px;
             }
+            .admin-access-badge {
+                bottom: 110px;
+                right: 32px;
+                padding: 8px 18px;
+                font-size: 11px;
+            }
         }
 
         @media (min-width: 1120px) {
@@ -518,6 +585,9 @@
             }
             .header-inner {
                 padding: 0 40px;
+            }
+            .admin-access-badge {
+                right: calc(50% - 560px + 32px);
             }
         }
 
@@ -538,10 +608,11 @@
     <!-- ===== HEADER ===== -->
     <header class="header" role="banner">
         <div class="header-inner">
-            <a href="#" class="logo" aria-label="Examiyo Home">
+            <div class="logo" id="adminAccessBtn" title="Click to access Admin Panel">
                 <span class="logo-icon">E</span>
                 <span class="logo-text">Exami<span>yo</span></span>
-            </a>
+                <span class="admin-hint">🔑 Admin Access</span>
+            </div>
 
             <div class="header-center" aria-label="Current board and class">
                 <span class="badge-dot" aria-hidden="true"></span>
@@ -621,6 +692,11 @@
 
     </main>
 
+    <!-- ===== ADMIN ACCESS BADGE (Floating) ===== -->
+    <a href="admin.html" class="admin-access-badge" title="Admin Panel">
+        <i class="fas fa-shield-alt"></i> Admin Panel
+    </a>
+
     <!-- ===== BOTTOM NAVIGATION ===== -->
     <nav class="bottom-nav" role="navigation" aria-label="Main navigation">
         <button class="nav-item active" data-nav="home" aria-current="page">
@@ -661,7 +737,16 @@
                 }, 2000);
             }
 
-            // Bottom nav
+            // ===== ADMIN ACCESS - Click on Logo =====
+            const adminAccessBtn = document.getElementById('adminAccessBtn');
+
+            adminAccessBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Navigate to admin panel
+                window.location.href = 'admin.html';
+            });
+
+            // ===== Bottom nav =====
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => {
                 item.addEventListener('click', function() {
@@ -672,7 +757,7 @@
                 });
             });
 
-            // Prevent zoom on double-tap (iOS)
+            // ===== Prevent zoom on double-tap (iOS) =====
             let lastTouchEnd = 0;
             document.addEventListener('touchend', function(e) {
                 const now = Date.now();
@@ -683,6 +768,8 @@
             }, { passive: false });
 
             console.log('📚 Examiyo · Homepage ready');
+            console.log('🔑 Click on "Examiyo" logo to access Admin Panel (password: 8596)');
+
         })();
     </script>
 
