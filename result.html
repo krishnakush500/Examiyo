@@ -2,16 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Examiyo — Result</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        * {
+        /* ============================================================
+                   RESET & BASE
+                   ============================================================ */
+        *,
+        *::before,
+        *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -20,21 +23,23 @@
         :root {
             --primary: #2563EB;
             --primary-light: #3B82F6;
-            --secondary: #22C55E;
+            --primary-dark: #1D4ED8;
+            --success: #22C55E;
+            --success-light: #86EFAC;
+            --warning: #F59E0B;
+            --danger: #EF4444;
             --bg: #F8FAFC;
-            --card-bg: #FFFFFF;
+            --card: #FFFFFF;
             --border: #E5E7EB;
-            --text-primary: #111827;
+            --text: #111827;
             --text-secondary: #6B7280;
             --text-muted: #9CA3AF;
-            --red: #DC2626;
-            --orange: #F59E0B;
-            --purple: #7C3AED;
-            --radius: 18px;
-            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+            --radius: 20px;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow: 0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
             --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-hover: 0 8px 30px rgba(37, 99, 235, 0.12), 0 2px 12px rgba(37, 99, 235, 0.06);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         html {
@@ -44,61 +49,61 @@
         }
 
         body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg);
-            color: var(--text-primary);
+            color: var(--text);
             min-height: 100vh;
-            padding: 0 0 60px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 16px 30px 16px;
         }
 
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 10px;
-        }
-
-        .container {
-            max-width: 820px;
-            margin: 0 auto;
-            padding: 12px 16px;
+        /* ============================================================
+                   RESULT WRAPPER
+                   ============================================================ */
+        .result-wrapper {
+            max-width: 520px;
+            width: 100%;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: resultEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(24px) scale(0.98);
         }
 
-        /* ===== HEADER ===== */
-        .header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            padding: 10px 0;
+        @keyframes resultEntry {
+            0% {
+                opacity: 0;
+                transform: translateY(24px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
-        .header-inner {
+        /* ============================================================
+                   HEADER
+                   ============================================================ */
+        .result-header {
+            padding: 18px 22px 14px 22px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            max-width: 820px;
-            margin: 0 auto;
-            padding: 0 16px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .logo {
+        .result-header .brand {
             display: flex;
             align-items: center;
             gap: 8px;
             text-decoration: none;
-            flex-shrink: 0;
         }
 
-        .logo-icon {
+        .result-header .brand .icon {
             width: 32px;
             height: 32px;
             background: var(--primary);
@@ -107,517 +112,1029 @@
             align-items: center;
             justify-content: center;
             color: #fff;
-            font-weight: 700;
-            font-size: 16px;
+            font-weight: 800;
+            font-size: 14px;
             letter-spacing: -0.5px;
             box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
         }
 
-        .logo-text {
+        .result-header .brand .name {
             font-weight: 700;
-            font-size: 18px;
+            font-size: 17px;
+            color: var(--text);
             letter-spacing: -0.3px;
-            color: var(--text-primary);
         }
-        .logo-text span {
+
+        .result-header .brand .name span {
             color: var(--primary);
         }
 
-        .header-center {
+        .result-header .right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-header .badge {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 3px 12px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .result-header .badge i {
+            margin-right: 4px;
+            font-size: 9px;
+        }
+
+        /* ============================================================
+                   BODY
+                   ============================================================ */
+        .result-body {
+            padding: 20px 22px 18px 22px;
+        }
+
+        /* ============================================================
+                   CELEBRATION
+                   ============================================================ */
+        .celebration {
+            text-align: center;
+            padding: 6px 0 12px 0;
+        }
+
+        .celebration .illustration {
+            font-size: 44px;
+            display: block;
+            line-height: 1.2;
+            animation: celebPop 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        @keyframes celebPop {
+            0% {
+                transform: scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+            60% {
+                transform: scale(1.15) rotate(3deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .celebration .title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+            margin-top: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .celebration .sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+                   STUDENT CARD
+                   ============================================================ */
+        .student-card {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 16px;
+        }
+
+        .student-card .item {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: var(--bg);
-            padding: 4px 12px 4px 10px;
-            border-radius: 30px;
-            border: 1px solid var(--border);
-            font-size: 11px;
-            font-weight: 500;
+            font-size: 12px;
             color: var(--text-secondary);
-            letter-spacing: 0.2px;
-            flex-shrink: 0;
-        }
-        .header-center .badge-dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: var(--secondary);
-            display: inline-block;
-            animation: pulse-dot 2s infinite;
-        }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            padding: 3px 0;
         }
 
-        .header-avatar {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        .student-card .item .label {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            min-width: 36px;
+        }
+
+        .student-card .item .value {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .student-card .item .value .highlight {
+            color: var(--primary);
+        }
+
+        /* ============================================================
+                   MAIN SCORE
+                   ============================================================ */
+        .score-section {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-weight: 600;
-            font-size: 14px;
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.20);
-            cursor: default;
-            user-select: none;
+            gap: 20px;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--transition);
         }
 
-        /* ===== BACK LINK ===== */
-        .back-link {
-            display: inline-flex;
+        .score-section:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Circular Progress */
+        .circle-wrap {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .circle-wrap svg {
+            transform: rotate(-90deg);
+            width: 80px;
+            height: 80px;
+        }
+
+        .circle-wrap .bg-circle {
+            fill: none;
+            stroke: var(--border);
+            stroke-width: 6;
+        }
+
+        .circle-wrap .progress-circle {
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: drop-shadow(0 2px 8px rgba(37, 99, 235, 0.20));
+        }
+
+        .circle-wrap .center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .score-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .score-details .score-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .score-details .score-big {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .score-details .score-big .total {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .score-details .score-sub {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .score-details .score-sub .pct {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ============================================================
+                   PERFORMANCE CARDS
+                   ============================================================ */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .perf-card {
+            background: var(--card);
+            border-radius: 14px;
+            padding: 12px 8px;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+            cursor: default;
+        }
+
+        .perf-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .perf-card .number {
+            font-size: 20px;
+            font-weight: 800;
+            display: block;
+            line-height: 1.2;
+        }
+
+        .perf-card .number.green {
+            color: var(--success);
+        }
+        .perf-card .number.red {
+            color: var(--danger);
+        }
+        .perf-card .number.blue {
+            color: var(--primary);
+        }
+        .perf-card .number.orange {
+            color: var(--warning);
+        }
+        .perf-card .number.purple {
+            color: #8B5CF6;
+        }
+
+        .perf-card .label {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+                   AI FEEDBACK
+                   ============================================================ */
+        .feedback-card {
+            background: var(--bg);
+            border-radius: 16px;
+            padding: 16px 18px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border);
+            transition: border-color var(--transition);
+        }
+
+        .feedback-card:hover {
+            border-color: var(--primary-light);
+        }
+
+        .feedback-card .fb-header {
+            display: flex;
             align-items: center;
             gap: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            font-family: 'Poppins', sans-serif;
-            transition: color 0.2s;
-            padding: 6px 0;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
-        .back-link:hover {
-            color: var(--primary);
+        .feedback-card .fb-header .fb-icon {
+            font-size: 16px;
         }
 
-        .back-link i {
-            font-size: 0.85rem;
-            transition: transform 0.2s;
-        }
-
-        .back-link:hover i {
-            transform: translateX(-3px);
-        }
-
-        /* ===== RESULT CARD ===== */
-        .result-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 24px 28px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-
-        .result-title {
-            text-align: center;
-            font-size: 1.4rem;
+        .feedback-card .fb-header .fb-title {
+            font-size: 13px;
             font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.2px;
+        }
+
+        .feedback-card .fb-header .fb-title span {
             color: var(--primary);
-            margin-bottom: 18px;
         }
 
-        .result-title i {
-            color: var(--orange);
-            margin-right: 8px;
+        .feedback-card .fb-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 400;
         }
 
-        .result-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 16px;
-            background: var(--bg);
-            padding: 14px 18px;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            border: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-
-        .result-info .info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px dashed var(--border);
-        }
-
-        .result-info .info-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 18px;
-            font-size: 0.9rem;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .result-table th {
-            background: var(--primary);
-            color: white;
-            padding: 10px 14px;
-            text-align: left;
+        .feedback-card .fb-text strong {
+            color: var(--text);
             font-weight: 600;
         }
 
-        .result-table td {
-            padding: 10px 14px;
-            border-bottom: 1px solid var(--border);
-            background: var(--card-bg);
-        }
-
-        .result-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .result-table .highlight {
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .result-table .wrong {
-            color: var(--red);
-            font-weight: 700;
-        }
-
-        .result-status {
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-            padding: 14px;
-            border-radius: 12px;
-            margin: 6px 0 0 0;
-        }
-
-        .result-status.first-division {
-            background: rgba(37, 99, 235, 0.10);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .result-status.second-division {
-            background: rgba(245, 158, 11, 0.10);
-            color: #D97706;
-            border: 2px solid #D97706;
-        }
-
-        .result-status.third-division {
-            background: rgba(124, 58, 237, 0.10);
-            color: var(--purple);
-            border: 2px solid var(--purple);
-        }
-
-        .result-status.fail {
-            background: rgba(220, 38, 38, 0.08);
-            color: var(--red);
-            border: 2px solid var(--red);
-        }
-
-        /* ===== ACTIONS ===== */
-        .result-actions {
+        /* ============================================================
+                   ACTION BUTTONS
+                   ============================================================ */
+        .actions {
             display: flex;
-            gap: 10px;
-            justify-content: center;
             flex-wrap: wrap;
-            margin-top: 4px;
+            gap: 8px;
+            margin-bottom: 2px;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 20px;
+            gap: 8px;
+            padding: 10px 18px;
             border-radius: 12px;
             border: none;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            gap: 8px;
+            transition: all var(--transition);
             text-decoration: none;
             -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
+            flex: 1;
+            min-width: 80px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .btn:active {
-            transform: scale(0.96);
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0);
+            transition: background 0.4s;
+        }
+
+        .btn:active::after {
+            background: rgba(255, 255, 255, 0.20);
         }
 
         .btn-primary {
             background: var(--primary);
-            color: white;
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.30);
         }
         .btn-primary:hover {
-            background: #1D4ED8;
-            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.35);
         }
 
         .btn-secondary {
             background: var(--bg);
-            color: var(--text-primary);
+            color: var(--text);
             border: 1px solid var(--border);
         }
         .btn-secondary:hover {
             background: var(--border);
+            transform: translateY(-2px);
         }
 
-        .btn-danger {
-            background: var(--red);
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #B91C1C;
-            box-shadow: var(--shadow-md);
-        }
-
-        .result-footer {
-            text-align: center;
+        .btn-outline {
+            background: transparent;
             color: var(--text-secondary);
-            font-size: 0.75rem;
-            margin-top: 12px;
-            padding-top: 10px;
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover {
+            background: var(--bg);
+            border-color: var(--primary-light);
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .btn-share {
+            background: var(--success);
+            color: #fff;
+            box-shadow: 0 2px 12px rgba(34, 197, 94, 0.30);
+        }
+        .btn-share:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.35);
+        }
+
+        .btn i {
+            font-size: 14px;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .result-footer {
+            padding: 14px 22px 16px 22px;
             border-top: 1px solid var(--border);
+            text-align: center;
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 640px) {
-            .container { padding: 10px 12px; }
-            .header-inner { padding: 0 12px; }
-            .logo-text { font-size: 16px; }
-            .logo-icon { width: 28px; height: 28px; font-size: 14px; }
-            .header-center { font-size: 10px; padding: 3px 10px 3px 8px; }
-            .header-avatar { width: 30px; height: 30px; font-size: 12px; }
-
-            .result-card { padding: 18px 16px; }
-            .result-title { font-size: 1.2rem; margin-bottom: 14px; }
-            .result-info { grid-template-columns: 1fr; padding: 12px 14px; font-size: 0.85rem; }
-            .result-table { font-size: 0.82rem; }
-            .result-table th, .result-table td { padding: 8px 10px; }
-            .result-status { font-size: 1rem; padding: 12px; }
-
-            .btn { padding: 8px 14px; font-size: 0.8rem; }
-            .result-actions { gap: 8px; }
+        .result-footer .line {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.2px;
         }
 
-        @media (max-width: 400px) {
-            .result-card { padding: 14px 12px; }
-            .result-title { font-size: 1rem; }
-            .result-table { font-size: 0.78rem; }
-            .result-table th, .result-table td { padding: 6px 8px; }
-            .btn { padding: 7px 12px; font-size: 0.75rem; }
+        .result-footer .line .dot {
+            display: inline-block;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            margin: 0 8px;
+            vertical-align: middle;
         }
 
+        .result-footer .line .brand-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .result-footer .credit {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+            letter-spacing: 0.1px;
+        }
+
+        /* ============================================================
+                   CONFETTI (Canvas)
+                   ============================================================ */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 480px) {
+            body {
+                padding: 12px 10px 20px 10px;
+            }
+
+            .result-header {
+                padding: 14px 16px 10px 16px;
+            }
+            .result-header .brand .name {
+                font-size: 15px;
+            }
+            .result-header .badge {
+                font-size: 9px;
+                padding: 2px 10px;
+            }
+
+            .result-body {
+                padding: 14px 16px 12px 16px;
+            }
+
+            .celebration .illustration {
+                font-size: 36px;
+            }
+            .celebration .title {
+                font-size: 19px;
+            }
+            .celebration .sub {
+                font-size: 13px;
+            }
+
+            .student-card {
+                grid-template-columns: 1fr;
+                gap: 2px 0;
+                padding: 12px 14px;
+            }
+            .student-card .item {
+                font-size: 11px;
+            }
+            .student-card .item .value {
+                font-size: 12px;
+            }
+
+            .score-section {
+                padding: 14px 16px;
+                gap: 14px;
+            }
+            .circle-wrap {
+                width: 64px;
+                height: 64px;
+            }
+            .circle-wrap svg {
+                width: 64px;
+                height: 64px;
+            }
+            .circle-wrap .center-text {
+                font-size: 16px;
+            }
+            .score-details .score-big {
+                font-size: 24px;
+            }
+            .score-details .score-sub {
+                font-size: 12px;
+            }
+
+            .performance-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 6px;
+            }
+            .perf-card {
+                padding: 10px 4px;
+            }
+            .perf-card .number {
+                font-size: 17px;
+            }
+            .perf-card .label {
+                font-size: 8px;
+            }
+
+            .feedback-card {
+                padding: 14px 14px;
+            }
+            .feedback-card .fb-text {
+                font-size: 13px;
+            }
+
+            .actions {
+                gap: 6px;
+            }
+            .btn {
+                font-size: 12px;
+                padding: 9px 12px;
+                min-width: 60px;
+            }
+            .btn i {
+                font-size: 12px;
+            }
+
+            .result-footer {
+                padding: 10px 16px 12px 16px;
+            }
+            .result-footer .line {
+                font-size: 10px;
+            }
+            .result-footer .credit {
+                font-size: 9px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .performance-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .score-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            .circle-wrap {
+                width: 72px;
+                height: 72px;
+            }
+            .circle-wrap svg {
+                width: 72px;
+                height: 72px;
+            }
+        }
+
+        @media (min-width: 600px) {
+            .result-wrapper {
+                max-width: 560px;
+            }
+            .student-card {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        /* ============================================================
+                   UTILITY — Count-up number style
+                   ============================================================ */
+        .count-up {
+            display: inline-block;
+        }
+
+        /* ============================================================
+                   HIDE PRINT ELEMENTS
+                   ============================================================ */
         @media print {
-            body * { visibility: hidden; }
-            .result-card, .result-card * { visibility: visible; }
-            .result-card { position: absolute; left: 0; top: 0; width: 100%; border: none; box-shadow: none; }
-            .result-actions, .result-footer, .back-link, .header { display: none !important; }
+            #confetti-canvas {
+                display: none !important;
+            }
+            .btn {
+                display: none !important;
+            }
+            .result-wrapper {
+                box-shadow: none !important;
+                border: 1px solid var(--border);
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <header class="header">
-        <div class="header-inner">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">E</span>
-                <span class="logo-text">Exami<span>yo</span></span>
+    <!-- ===== CONFETTI CANVAS ===== -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- ===== RESULT WRAPPER ===== -->
+    <div class="result-wrapper" id="resultWrapper">
+
+        <!-- ===== HEADER ===== -->
+        <header class="result-header">
+            <a href="#" class="brand" aria-label="Examiyo Home">
+                <span class="icon">E</span>
+                <span class="name">Exami<span>yo</span></span>
             </a>
-            <div class="header-center">
-                <span class="badge-dot"></span>
-                UP Board Class 10
+            <div class="right">
+                <span class="badge"><i class="fas fa-check-circle"></i> Result</span>
+                <span class="badge"><i class="fas fa-graduation-cap"></i> Class 10</span>
             </div>
-            <div class="header-avatar">K</div>
-        </div>
-    </header>
+        </header>
 
-    <!-- ===== MAIN ===== -->
-    <main class="container">
+        <!-- ===== BODY ===== -->
+        <div class="result-body" id="resultBody">
 
-        <!-- Back Link -->
-        <a href="chapter-list.html" class="back-link" id="backLink">
-            <i class="fas fa-arrow-left"></i> Back to Chapters
-        </a>
-
-        <!-- Result Card -->
-        <div class="result-card" id="resultCard">
-            <div class="result-title">
-                <i class="fas fa-award"></i> Test Result
+            <!-- Celebration -->
+            <div class="celebration" id="celebration">
+                <span class="illustration" id="celebIcon">🎉</span>
+                <div class="title" id="celebTitle">Excellent!</div>
+                <div class="sub" id="celebSub">You've aced this chapter</div>
             </div>
 
-            <div class="result-info">
-                <div class="info-item"><strong>Test:</strong> <span id="rChapter">-</span></div>
-                <div class="info-item"><strong>Subject:</strong> <span id="rSubject">-</span></div>
-                <div class="info-item"><strong>Date:</strong> <span id="rDate">-</span></div>
-                <div class="info-item"><strong>Result ID:</strong> <span id="rId">-</span></div>
+            <!-- Student Card -->
+            <div class="student-card" id="studentCard">
+                <div class="item">
+                    <span class="label">Student</span>
+                    <span class="value" id="studentName">Krishna</span>
+                </div>
+                <div class="item">
+                    <span class="label">Subject</span>
+                    <span class="value" id="studentSubject">English</span>
+                </div>
+                <div class="item">
+                    <span class="label">Chapter</span>
+                    <span class="value" id="studentChapter">Prose</span>
+                </div>
+                <div class="item">
+                    <span class="label">Date</span>
+                    <span class="value" id="studentDate">Today</span>
+                </div>
             </div>
 
-            <table class="result-table">
-                <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
-                <tbody>
-                    <tr><td>Total Questions</td><td id="rTotal">0</td></tr>
-                    <tr><td>Attempted</td><td id="rAttempted">0</td></tr>
-                    <tr><td>Correct Answers</td><td id="rCorrect" class="highlight">0</td></tr>
-                    <tr><td>Wrong Answers</td><td id="rWrong" class="wrong">0</td></tr>
-                    <tr><td>Total Marks</td><td id="rTotalMarks">0</td></tr>
-                    <tr><td>Marks Obtained</td><td id="rObtained" class="highlight">0</td></tr>
-                    <tr><td>Percentage</td><td id="rPercentage" class="highlight">0%</td></tr>
-                </tbody>
-            </table>
+            <!-- Main Score -->
+            <div class="score-section">
+                <div class="circle-wrap">
+                    <svg viewBox="0 0 80 80">
+                        <circle class="bg-circle" cx="40" cy="40" r="32" />
+                        <circle class="progress-circle" id="progressCircle" cx="40" cy="40" r="32"
+                        stroke="var(--primary)" stroke-dasharray="201.06" stroke-dashoffset="201.06" />
+                    </svg>
+                    <span class="center-text" id="circlePercent">0%</span>
+                </div>
+                <div class="score-details">
+                    <div class="score-label">Score</div>
+                    <div class="score-big">
+                        <span id="scoreObtained">0</span>
+                        <span class="total"> / <span id="scoreTotal">0</span></span>
+                    </div>
+                    <div class="score-sub">
+                        <span class="pct" id="scorePct">0%</span> · <span id="scoreAccuracy">0%</span> accuracy
+                    </div>
+                </div>
+            </div>
 
-            <div class="result-status" id="rStatus">-</div>
+            <!-- Performance Cards -->
+            <div class="performance-grid">
+                <div class="perf-card">
+                    <span class="number green" id="perfCorrect">0</span>
+                    <span class="label">Correct</span>
+                </div>
+                <div class="perf-card">
+                    <span class="number red" id="perfWrong">0</span>
+                    <span class="label">Wrong</span>
+                </div>
+                <div class="perf-card">
+                    <span class="number blue" id="perfSkipped">0</span>
+                    <span class="label">Skipped</span>
+                </div>
+            </div>
+
+            <!-- AI Feedback -->
+            <div class="feedback-card" id="feedbackCard">
+                <div class="fb-header">
+                    <span class="fb-icon" id="fbIcon">🤖</span>
+                    <span class="fb-title">Personal <span>Feedback</span></span>
+                </div>
+                <div class="fb-text" id="fbText">
+                    <strong>Excellent!</strong> You have mastered this chapter. Ready for Level 3.
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button class="btn btn-primary" id="practiceAgain">
+                    <i class="fas fa-rotate-right"></i> Practice Again
+                </button>
+                <button class="btn btn-secondary" id="reviewAnswers">
+                    <i class="fas fa-eye"></i> Review
+                </button>
+                <button class="btn btn-outline" id="downloadPdf">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </button>
+                <button class="btn btn-share" id="shareResult">
+                    <i class="fas fa-share-nodes"></i> Share
+                </button>
+            </div>
+
         </div>
 
-        <!-- Actions -->
-        <div class="result-actions">
-            <button id="downloadPDF" class="btn btn-primary">
-                <i class="fas fa-download"></i> Download PDF
-            </button>
-            <button id="printResult" class="btn btn-secondary">
-                <i class="fas fa-print"></i> Print
-            </button>
-            <button id="newTest" class="btn btn-danger">
-                <i class="fas fa-arrow-left"></i> Back to Chapters
-            </button>
-        </div>
+        <!-- ===== FOOTER ===== -->
+        <footer class="result-footer">
+            <div class="line">
+                <span class="brand-highlight">Examiyo</span>
+                <span class="dot"></span>
+                Practice Today. Score Tomorrow.
+            </div>
+            <div class="credit">Created by Krishna Kumar · Founder &amp; Educator</div>
+        </footer>
 
-        <div class="result-footer">
-            <p>Examiyo — MCQ Practice Platform</p>
-        </div>
-
-    </main>
+    </div>
 
     <script>
         // ============================================================
-        // READ URL PARAMS
+        // CONFIG — DEMO DATA (replace with real data from test)
         // ============================================================
-        function getResultData() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                chapter: params.get('chapter') || 'Chapter Test',
-                subject: params.get('subject') || 'English',
-                total: parseInt(params.get('total')) || 0,
-                attempted: parseInt(params.get('attempted')) || 0,
-                correct: parseInt(params.get('correct')) || 0,
-                wrong: parseInt(params.get('wrong')) || 0,
-                totalMarks: parseInt(params.get('totalMarks')) || 0,
-                obtained: parseFloat(params.get('obtained')) || 0,
-                percentage: parseFloat(params.get('percentage')) || 0,
-                division: params.get('division') || 'FAIL',
-                statusClass: params.get('statusClass') || 'fail',
-                resultId: params.get('resultId') || 'EXM-' + Date.now(),
-                date: params.get('date') || new Date().toLocaleDateString('en-IN')
-            };
+        const RESULT_DATA = {
+            studentName: 'Krishna',
+            subject: 'English',
+            chapter: 'Prose',
+            level: 'Level 2',
+            attempt: 1,
+            date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+            total: 20,
+            correct: 18,
+            wrong: 1,
+            skipped: 1,
+            timeTaken: '12:45',
+            accuracy: 90,
+        };
+
+        // ============================================================
+        // DERIVED
+        // ============================================================
+        const pct = Math.round((RESULT_DATA.correct / RESULT_DATA.total) * 100);
+        const obtained = RESULT_DATA.correct; // 1 mark per question
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const $ = id => document.getElementById(id);
+
+        // ============================================================
+        // CELEBRATION
+        // ============================================================
+        function setCelebration(pct) {
+            const icon = $('celebIcon');
+            const title = $('celebTitle');
+            const sub = $('celebSub');
+
+            if (pct >= 90) {
+                icon.textContent = '🎉';
+                title.textContent = 'Excellent!';
+                sub.textContent = 'You\'ve aced this chapter!';
+            } else if (pct >= 75) {
+                icon.textContent = '⭐';
+                title.textContent = 'Very Good!';
+                sub.textContent = 'Keep up the great work!';
+            } else if (pct >= 50) {
+                icon.textContent = '👍';
+                title.textContent = 'Good!';
+                sub.textContent = 'Review the topics you missed.';
+            } else {
+                icon.textContent = '💪';
+                title.textContent = 'Keep Practicing!';
+                sub.textContent = 'You\'ll get it next time.';
+            }
         }
 
         // ============================================================
-        // DISPLAY RESULT
+        // FEEDBACK
         // ============================================================
-        function displayResult() {
-            const data = getResultData();
+        function setFeedback(pct) {
+            const el = $('fbText');
+            if (pct >= 90) {
+                el.innerHTML =
+                    '<strong>Excellent!</strong> You have mastered this chapter. Ready for the next level. 🚀';
+            } else if (pct >= 75) {
+                el.innerHTML =
+                    '<strong>Great work!</strong> You\'re doing well. Revise the topics you got wrong and try again.';
+            } else if (pct >= 50) {
+                el.innerHTML =
+                    '<strong>Good effort!</strong> Focus on the concepts you missed. Practice more to improve.';
+            } else {
+                el.innerHTML =
+                    '<strong>Don\'t give up!</strong> Review the chapter thoroughly and attempt again. You\'ve got this! 💪';
+            }
+        }
 
-            document.getElementById('rChapter').textContent = data.chapter;
-            document.getElementById('rSubject').textContent = data.subject;
-            document.getElementById('rDate').textContent = data.date;
-            document.getElementById('rId').textContent = data.resultId;
+        // ============================================================
+        // RENDER STATS
+        // ============================================================
+        function renderStats() {
+            // Student card
+            $('studentName').textContent = RESULT_DATA.studentName;
+            $('studentSubject').textContent = RESULT_DATA.subject;
+            $('studentChapter').textContent = RESULT_DATA.chapter;
+            $('studentDate').textContent = RESULT_DATA.date;
 
-            document.getElementById('rTotal').textContent = data.total;
-            document.getElementById('rAttempted').textContent = data.attempted;
-            document.getElementById('rCorrect').textContent = data.correct;
-            document.getElementById('rWrong').textContent = data.wrong;
-            document.getElementById('rTotalMarks').textContent = data.totalMarks;
-            document.getElementById('rObtained').textContent = data.obtained;
-            document.getElementById('rPercentage').textContent = data.percentage + '%';
+            // Score
+            $('scoreObtained').textContent = obtained;
+            $('scoreTotal').textContent = RESULT_DATA.total;
+            $('scorePct').textContent = pct + '%';
+            $('scoreAccuracy').textContent = RESULT_DATA.accuracy + '%';
 
-            const statusEl = document.getElementById('rStatus');
-            statusEl.className = `result-status ${data.statusClass}`;
-            statusEl.textContent = data.division === 'FAIL' ? '❌ FAIL' : `🏆 ${data.division}`;
+            // Circle
+            const circle = $('progressCircle');
+            const circumference = 201.06;
+            const offset = circumference - (pct / 100) * circumference;
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+            }, 400);
+            $('circlePercent').textContent = pct + '%';
 
-            // Back link
-            const backLink = document.getElementById('backLink');
-            backLink.href = `chapter-list.html?subject=${encodeURIComponent(data.subject)}`;
+            // Performance
+            $('perfCorrect').textContent = RESULT_DATA.correct;
+            $('perfWrong').textContent = RESULT_DATA.wrong;
+            $('perfSkipped').textContent = RESULT_DATA.skipped;
 
-            // New test button
-            document.getElementById('newTest').addEventListener('click', function() {
-                window.location.href = backLink.href;
+            // Celebration & Feedback
+            setCelebration(pct);
+            setFeedback(pct);
+        }
+
+        // ============================================================
+        // CONFETTI (only if pct >= 80)
+        // ============================================================
+        function launchConfetti() {
+            if (pct < 80) return;
+
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            let W, H;
+            let particles = [];
+            const count = 180;
+            let animId = null;
+            let startTime = Date.now();
+            const duration = 2200; // ms
+
+            function resize() {
+                W = window.innerWidth;
+                H = window.innerHeight;
+                canvas.width = W;
+                canvas.height = H;
+            }
+
+            function random(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function initParticles() {
+                const colors = ['#2563EB', '#22C55E', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4', '#F472B6'];
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: random(0, W),
+                        y: random(-H * 0.2, -10),
+                        w: random(4, 8),
+                        h: random(4, 8),
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        vx: random(-3, 3),
+                        vy: random(2, 6),
+                        rot: random(0, 360),
+                        rotSpeed: random(-6, 6),
+                        opacity: 1,
+                    });
+                }
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, W, H);
+                for (const p of particles) {
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rot * Math.PI) / 180);
+                    ctx.globalAlpha = p.opacity;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.08;
+                    p.rot += p.rotSpeed;
+
+                    // fade out near bottom
+                    if (p.y > H * 0.7) {
+                        p.opacity = Math.max(0, p.opacity - 0.015);
+                    }
+                }
+
+                // remove dead particles
+                particles = particles.filter(p => p.opacity > 0 && p.y < H + 20);
+
+                if (particles.length === 0 || Date.now() - startTime > duration) {
+                    cancelAnimationFrame(animId);
+                    ctx.clearRect(0, 0, W, H);
+                    return;
+                }
+
+                animId = requestAnimationFrame(drawParticles);
+            }
+
+            resize();
+            initParticles();
+            drawParticles();
+
+            window.addEventListener('resize', () => {
+                resize();
             });
         }
 
         // ============================================================
-        // PRINT
+        // ACTIONS
         // ============================================================
-        document.getElementById('printResult').addEventListener('click', function() {
-            window.print();
+        $('practiceAgain').addEventListener('click', function() {
+            window.location.href = 'chapter-list.html?subject=' + encodeURIComponent(RESULT_DATA.subject);
         });
 
-        // ============================================================
-        // DOWNLOAD PDF
-        // ============================================================
-        document.getElementById('downloadPDF').addEventListener('click', async function() {
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const card = document.getElementById('resultCard');
+        $('reviewAnswers').addEventListener('click', function() {
+            alert('📝 Review Answers: This will show your answer sheet with correct/incorrect marks.');
+        });
 
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
-            this.disabled = true;
+        $('downloadPdf').addEventListener('click', function() {
+            alert('📄 PDF download will be available soon. For now, use Print (Ctrl+P).');
+        });
 
-            try {
-                const clone = card.cloneNode(true);
-                clone.style.width = '700px';
-                clone.style.padding = '30px';
-                clone.style.border = '2px solid #2563EB';
-                clone.style.borderRadius = '18px';
-                clone.style.background = 'white';
-                clone.style.position = 'fixed';
-                clone.style.left = '-10000px';
-                clone.style.top = '0';
-                clone.style.zIndex = '-1000';
-                document.body.appendChild(clone);
-
-                const canvas = await html2canvas(clone, {
-                    scale: 2,
-                    backgroundColor: '#FFFFFF',
-                    useCORS: true,
-                    logging: false,
-                    width: 700
+        $('shareResult').addEventListener('click', function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Examiyo Result',
+                    text: `🎉 I scored ${pct}% (${obtained}/${RESULT_DATA.total}) in ${RESULT_DATA.subject} - ${RESULT_DATA.chapter}! Practice with Examiyo 🚀`,
+                    url: window.location.href,
+                }).catch(() => {});
+            } else {
+                // Fallback: copy to clipboard
+                const text =
+                    `🎉 Examiyo Result\n📚 ${RESULT_DATA.subject} - ${RESULT_DATA.chapter}\n📝 Score: ${obtained}/${RESULT_DATA.total} (${pct}%)\n✅ Accuracy: ${RESULT_DATA.accuracy}%\n\nPractice Today. Score Tomorrow. 📚`;
+                navigator.clipboard.writeText(text).then(() => {
+                    alert('📋 Result copied to clipboard! Share it with your friends.');
+                }).catch(() => {
+                    prompt('Copy this and share:', text);
                 });
-
-                document.body.removeChild(clone);
-
-                const imgData = canvas.toDataURL('image/png');
-                const imgWidth = 190;
-                const pageHeight = 277;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                if (imgHeight > pageHeight) {
-                    const scale = pageHeight / imgHeight;
-                    const sw = imgWidth * scale * 0.95;
-                    const sh = imgHeight * scale * 0.95;
-                    pdf.addImage(imgData, 'PNG', (210 - sw) / 2, (297 - sh) / 2, sw, sh);
-                } else {
-                    pdf.addImage(imgData, 'PNG', 10, (pageHeight - imgHeight) / 2, imgWidth, imgHeight);
-                }
-
-                const resultId = document.getElementById('rId').textContent;
-                pdf.setFontSize(10);
-                pdf.setTextColor(100, 100, 100);
-                pdf.text(`Result ID: ${resultId} | Generated: ${new Date().toLocaleDateString()}`, 105, 287, { align: 'center' });
-
-                pdf.save(`Examiyo_Result_${resultId}.pdf`);
-
-            } catch (err) {
-                console.error('PDF error:', err);
-                alert('Error generating PDF. Please use Print instead.');
             }
-
-            this.innerHTML = '<i class="fas fa-download"></i> Download PDF';
-            this.disabled = false;
         });
 
         // ============================================================
         // INIT
         // ============================================================
-        document.addEventListener('DOMContentLoaded', displayResult);
+        document.addEventListener('DOMContentLoaded', function() {
+            renderStats();
+
+            // Launch confetti after a small delay
+            setTimeout(() => {
+                launchConfetti();
+            }, 800);
+
+            console.log('📊 Examiyo Result rendered');
+            console.log(`📈 Score: ${obtained}/${RESULT_DATA.total} (${pct}%)`);
+        });
     </script>
+
 </body>
 </html>
