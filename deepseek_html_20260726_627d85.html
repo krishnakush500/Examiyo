@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Examiyo — Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ============================================================
+                   RESET & BASE
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563EB;
+            --primary-light: #3B82F6;
+            --primary-dark: #1D4ED8;
+            --success: #22C55E;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --border: #E5E7EB;
+            --text: #111827;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --radius: 16px;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ============================================================
+                   LOGIN SCREEN
+                   ============================================================ */
+        .login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+        }
+
+        .login-box {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 40px 36px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            animation: fadeUp 0.5s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .login-box .brand .icon {
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.30);
+        }
+
+        .login-box .brand .name {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .login-box .brand .name span {
+            color: var(--primary);
+        }
+
+        .login-box .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .login-box .lock-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .login-box .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .login-box .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .login-box .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color var(--transition);
+            background: var(--bg);
+        }
+
+        .login-box .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .login-box .btn-login {
+            width: 100%;
+            padding: 11px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.30);
+        }
+
+        .login-box .btn-login:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+        }
+
+        .login-box .btn-login:active {
+            transform: scale(0.97);
+        }
+
+        .login-box .error-msg {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+            background: rgba(239, 68, 68, 0.08);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .login-box .error-msg.show {
+            display: block;
+        }
+
+        .login-box .hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 14px;
+        }
+
+        /* ============================================================
+                   ADMIN CONTAINER
+                   ============================================================ */
+        .admin-container {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .admin-container.active {
+            display: block;
+        }
+
+        /* ============================================================
+                   ADMIN HEADER
+                   ============================================================ */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .admin-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .admin-header .brand .icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 800;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+        }
+
+        .admin-header .brand .name {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        .admin-header .brand .name span {
+            color: var(--primary);
+        }
+
+        .admin-header .brand .badge {
+            font-size: 10px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .admin-header .right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .admin-header .right .admin-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .admin-header .right .admin-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .admin-header .right .logout-btn {
+            background: none;
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all var(--transition);
+        }
+
+        .admin-header .right .logout-btn:hover {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+
+        /* ============================================================
+                   PAGE NAVIGATION
+                   ============================================================ */
+        .page {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ============================================================
+                   DASHBOARD
+                   ============================================================ */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .dashboard-header .title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        .dashboard-header .title span {
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 16px;
+        }
+
+        .dashboard-header .stats {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-header .stats .stat-item {
+            background: var(--card);
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .dashboard-header .stats .stat-item .num {
+            color: var(--text);
+            font-weight: 800;
+        }
+
+        .btn-add {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-add:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.30);
+        }
+
+        .btn-add:active {
+            transform: scale(0.97);
+        }
+
+        .btn-add i {
+            font-size: 16px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .btn-back:hover {
+            background: var(--border);
+        }
+
+        /* ============================================================
+                   EXAM GRID
+                   ============================================================ */
+        .exam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .exam-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px 18px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .exam-card:active {
+            transform: scale(0.97);
+        }
+
+        .exam-card .exam-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .exam-card .exam-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .exam-card .exam-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .exam-card .exam-meta .count {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .exam-card .exam-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: all var(--transition);
+        }
+
+        .exam-card:hover .exam-arrow {
+            transform: translateY(-50%) translateX(4px);
+            color: var(--primary);
+        }
+
+        .exam-card .exam-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        .exam-card .exam-actions .btn-sm {
+            padding: 4px 12px;
+            font-size: 11px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .exam-card .exam-actions .btn-sm.edit {
+            background: var(--bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .exam-card .exam-actions .btn-sm.edit:hover {
+            background: var(--border);
+        }
+
+        .exam-card .exam-actions .btn-sm.delete {
+            background: rgba(239, 68, 68, 0.08);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+        }
+
+        .exam-card .exam-actions .btn-sm.delete:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        /* ============================================================
+                   EXAM DETAIL PAGE
+                   ============================================================ */
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .detail-header .exam-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-header .exam-title .icon {
+            font-size: 28px;
+        }
+
+        .detail-header .exam-title .name {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .detail-header .exam-title .sub {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .detail-header .actions-right {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .btn-sm-primary {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-sm-primary:active {
+            transform: scale(0.97);
+        }
+
+        /* ============================================================
+                   CHAPTER LIST
+                   ============================================================ */
+        .chapter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chapter-item {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+
+        .chapter-item:hover {
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chapter-item .chapter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chapter-item .chapter-header .left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chapter-item .chapter-header .left .num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .chapter-item .chapter-header .left .name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .chapter-item .chapter-header .left .q-count {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--bg);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .chapter-item .chapter-header .right {
+            display: flex;
+            gap: 6px;
+        }
+
+        .chapter-item .chapter-header .right .btn-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .chapter-item .chapter-header .right .btn-icon:hover {
+            background: var(--bg);
+            border-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .chapter-item .chapter-header .right .btn-icon.danger:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        .chapter-item .questions-list {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .chapter-item .questions-list .q-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 10px;
+            background: var(--bg);
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .chapter-item .questions-list .q-item .q-text {
+            flex: 1;
+            margin-right: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chapter-item .questions-list .q-item .q-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .chapter-item .questions-list .q-item .q-actions button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 2px 6px;
+            font-size: 12px;
+            transition: color var(--transition);
+        }
+
+        .chapter-item .questions-list .q-item .q-actions button:hover {
+            color: var(--primary);
+        }
+
+        .chapter-item .questions-list .q-item .q-actions button.danger:hover {
+            color: var(--danger);
+        }
+
+        .btn-add-question {
+            margin-top: 10px;
+            padding: 8px 14px;
+            background: rgba(37, 99, 235, 0.06);
+            color: var(--primary);
+            border: 1px dashed var(--primary);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-add-question:hover {
+            background: rgba(37, 99, 235, 0.10);
+            border-color: var(--primary);
+        }
+
+        /* ============================================================
+                   MODAL
+                   ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.40);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 28px 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: fadeUp 0.3s ease;
+        }
+
+        .modal-box .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-box .modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .modal-box .modal-header .close-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all var(--transition);
+        }
+
+        .modal-box .modal-header .close-btn:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .modal-box .form-group {
+            margin-bottom: 14px;
+        }
+
+        .modal-box .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .modal-box .form-group input,
+        .modal-box .form-group textarea,
+        .modal-box .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color var(--transition);
+            background: var(--bg);
+        }
+
+        .modal-box .form-group input:focus,
+        .modal-box .form-group textarea:focus,
+        .modal-box .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+        }
+
+        .modal-box .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal-box .form-group .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .modal-box .form-group .options-grid input {
+            width: 100%;
+        }
+
+        .modal-box .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .modal-box .btn-submit:hover {
+            background: var(--primary-dark);
+        }
+
+        .modal-box .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* ============================================================
+                   EMPTY STATE
+                   ============================================================ */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 640px) {
+            .admin-container {
+                padding: 12px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .admin-header .right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dashboard-header .title {
+                font-size: 18px;
+            }
+
+            .exam-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .detail-header .actions-right {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .detail-header .actions-right .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .chapter-item .chapter-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .chapter-item .chapter-header .right {
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .modal-box {
+                padding: 20px;
+            }
+
+            .modal-box .form-group .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-box {
+                padding: 28px 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .exam-card .exam-actions {
+                flex-direction: column;
+            }
+
+            .exam-card .exam-actions .btn-sm {
+                width: 100%;
+                text-align: center;
+            }
+
+            .dashboard-header .stats {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .dashboard-header .stats .stat-item {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    LOGIN SCREEN
+    ============================================================ -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="brand">
+                <span class="icon">E</span>
+                <span class="name">Exami<span>yo</span></span>
+            </div>
+            <div class="subtitle">Admin Panel</div>
+            <span class="lock-icon">🔐</span>
+            <div class="form-group">
+                <label>Enter Admin Password</label>
+                <input type="password" id="adminPassword" placeholder="Enter password..." autofocus />
+            </div>
+            <button class="btn-login" id="loginBtn">Unlock Admin</button>
+            <div class="error-msg" id="loginError">🔑 Incorrect password. Please try again.</div>
+            <div class="hint">Hint: Click on "Examiyo" text on homepage to access</div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    ADMIN CONTAINER
+    ============================================================ -->
+    <div class="admin-container" id="adminContainer">
+
+        <!-- Admin Header -->
+        <header class="admin-header">
+            <div class="brand" id="brandHome">
+                <span class="icon">E</span>
+                <span class="name">Exami<span>yo</span></span>
+                <span class="badge">Admin</span>
+            </div>
+            <div class="right">
+                <span class="admin-name">Krishna Sir</span>
+                <div class="admin-avatar">K</div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- ===== PAGE: DASHBOARD ===== -->
+        <div class="page active" id="pageDashboard">
+            <div class="dashboard-header">
+                <div>
+                    <div class="title">
+                        📚 All Exams
+                        <span id="examCount">(0)</span>
+                    </div>
+                </div>
+                <button class="btn-add" id="addExamBtn">
+                    <i class="fas fa-plus"></i> Add New Exam
+                </button>
+            </div>
+
+            <div class="exam-grid" id="examGrid">
+                <!-- Exams loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- ===== PAGE: EXAM DETAIL ===== -->
+        <div class="page" id="pageExamDetail">
+            <div class="detail-header">
+                <button class="btn-back" id="backToDashboard">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <div class="exam-title">
+                    <span class="icon" id="detailIcon">📚</span>
+                    <div>
+                        <span class="name" id="detailName">Exam Name</span>
+                        <span class="sub" id="detailSub">Chapters</span>
+                    </div>
+                </div>
+                <div class="actions-right">
+                    <button class="btn-sm-primary" id="addChapterBtn">
+                        <i class="fas fa-plus"></i> Add Chapter
+                    </button>
+                </div>
+            </div>
+
+            <div class="chapter-list" id="chapterList">
+                <!-- Chapters loaded dynamically -->
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    MODAL: Add Exam / Add Chapter / Add Question
+    ============================================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New</h3>
+                <button class="close-btn" id="modalClose">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // DATA STORE (LocalStorage)
+        // ============================================================
+        const STORAGE_KEY = 'examiyo_admin_data';
+
+        function getDefaultData() {
+            return {
+                exams: [{
+                    id: 'exam_1',
+                    name: 'UP Board Class 10',
+                    icon: '📘',
+                    chapters: [{
+                        id: 'ch_1',
+                        name: 'Prose',
+                        questions: [
+                            { id: 'q_1', text: 'What is the capital of France?', options: ['London',
+                                    'Paris', 'Berlin', 'Madrid'
+                                ], correct: 'B' },
+                            { id: 'q_2', text: 'Which planet is known as the Red Planet?',
+                                options: ['Venus', 'Jupiter', 'Mars', 'Saturn'], correct: 'C' }
+                        ]
+                    }, {
+                        id: 'ch_2',
+                        name: 'Poetry',
+                        questions: [
+                            { id: 'q_3', text: 'Who wrote "Hamlet"?', options: ['Charles Dickens',
+                                    'William Shakespeare', 'Mark Twain', 'Jane Austen'
+                                ], correct: 'B' }
+                        ]
+                    }]
+                }, {
+                    id: 'exam_2',
+                    name: 'Bihar Board Class 10',
+                    icon: '📗',
+                    chapters: [{
+                        id: 'ch_3',
+                        name: 'Grammar',
+                        questions: [
+                            { id: 'q_4', text: 'What is a noun?', options: ['A person',
+                                    'A place', 'A thing', 'All of these'
+                                ], correct: 'D' }
+                        ]
+                    }]
+                }, {
+                    id: 'exam_3',
+                    name: 'Railway Group D',
+                    icon: '🚆',
+                    chapters: [{
+                        id: 'ch_4',
+                        name: 'General Knowledge',
+                        questions: []
+                    }]
+                }, {
+                    id: 'exam_4',
+                    name: 'NEET',
+                    icon: '⚕️',
+                    chapters: [{
+                        id: 'ch_5',
+                        name: 'Biology',
+                        questions: []
+                    }]
+                }]
+            };
+        }
+
+        let data = null;
+        let currentExamId = null;
+
+        // ============================================================
+        // LOAD / SAVE DATA
+        // ============================================================
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    data = JSON.parse(stored);
+                    return;
+                } catch (e) {}
+            }
+            data = getDefaultData();
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        // ============================================================
+        // GENERATE ID
+        // ============================================================
+        function genId(prefix) {
+            return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+        }
+
+        // ============================================================
+        // DOM REFS
+        // ============================================================
+        const $ = id => document.getElementById(id);
+        const loginScreen = $('loginScreen');
+        const adminContainer = $('adminContainer');
+        const loginBtn = $('loginBtn');
+        const adminPassword = $('adminPassword');
+        const loginError = $('loginError');
+        const logoutBtn = $('logoutBtn');
+        const brandHome = $('brandHome');
+        const examGrid = $('examGrid');
+        const addExamBtn = $('addExamBtn');
+        const backToDashboard = $('backToDashboard');
+        const detailName = $('detailName');
+        const detailIcon = $('detailIcon');
+        const detailSub = $('detailSub');
+        const chapterList = $('chapterList');
+        const addChapterBtn = $('addChapterBtn');
+        const modalOverlay = $('modalOverlay');
+        const modalClose = $('modalClose');
+        const modalTitle = $('modalTitle');
+        const modalBody = $('modalBody');
+        const examCount = $('examCount');
+
+        // ============================================================
+        // LOGIN
+        // ============================================================
+        const ADMIN_PASSWORD = '8596';
+
+        function handleLogin() {
+            const pass = adminPassword.value.trim();
+            if (pass === ADMIN_PASSWORD) {
+                loginScreen.style.display = 'none';
+                adminContainer.classList.add('active');
+                loadData();
+                renderDashboard();
+                loginError.classList.remove('show');
+                adminPassword.value = '';
+            } else {
+                loginError.classList.add('show');
+                adminPassword.value = '';
+                adminPassword.focus();
+            }
+        }
+
+        loginBtn.addEventListener('click', handleLogin);
+        adminPassword.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('Logout from admin panel?')) {
+                adminContainer.classList.remove('active');
+                loginScreen.style.display = 'flex';
+                adminPassword.value = '';
+                loginError.classList.remove('show');
+            }
+        });
+
+        brandHome.addEventListener('click', function() {
+            showPage('pageDashboard');
+        });
+
+        // ============================================================
+        // PAGE NAVIGATION
+        // ============================================================
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            $(pageId).classList.add('active');
+        }
+
+        // ============================================================
+        // RENDER DASHBOARD
+        // ============================================================
+        function renderDashboard() {
+            const exams = data.exams || [];
+            examCount.textContent = `(${exams.length})`;
+
+            if (exams.length === 0) {
+                examGrid.innerHTML = `
+                            <div class="empty-state" style="grid-column: 1/-1;">
+                                <div class="icon">📭</div>
+                                <h3>No Exams Added</h3>
+                                <p>Click "Add New Exam" to create your first exam.</p>
+                            </div>
+                        `;
+                return;
+            }
+
+            examGrid.innerHTML = exams.map(exam => `
+                        <div class="exam-card" data-exam-id="${exam.id}">
+                            <span class="exam-icon">${exam.icon || '📚'}</span>
+                            <div class="exam-name">${exam.name}</div>
+                            <div class="exam-meta">
+                                <span class="count">${exam.chapters?.length || 0}</span> chapters
+                                &nbsp;·&nbsp; 
+                                <span class="count">${exam.chapters?.reduce((acc, ch) => acc + (ch.questions?.length || 0), 0) || 0}</span> questions
+                            </div>
+                            <span class="exam-arrow">→</span>
+                            <div class="exam-actions">
+                                <button class="btn-sm edit" data-exam-id="${exam.id}" onclick="editExam('${exam.id}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn-sm delete" data-exam-id="${exam.id}" onclick="deleteExam('${exam.id}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+
+            // Click on card to open exam detail
+            document.querySelectorAll('.exam-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    // Don't open detail if clicked on button
+                    if (e.target.closest('.exam-actions')) return;
+                    const id = this.dataset.examId;
+                    openExamDetail(id);
+                });
+            });
+        }
+
+        // ============================================================
+        // EXAM DETAIL
+        // ============================================================
+        function openExamDetail(examId) {
+            currentExamId = examId;
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+
+            detailIcon.textContent = exam.icon || '📚';
+            detailName.textContent = exam.name;
+            detailSub.textContent = `${exam.chapters?.length || 0} chapters`;
+
+            renderChapters(exam);
+            showPage('pageExamDetail');
+        }
+
+        function renderChapters(exam) {
+            const chapters = exam.chapters || [];
+
+            if (chapters.length === 0) {
+                chapterList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="icon">📖</div>
+                                <h3>No Chapters Added</h3>
+                                <p>Click "Add Chapter" to create your first chapter.</p>
+                            </div>
+                        `;
+                return;
+            }
+
+            chapterList.innerHTML = chapters.map((ch, idx) => `
+                        <div class="chapter-item" data-chapter-id="${ch.id}">
+                            <div class="chapter-header">
+                                <div class="left">
+                                    <span class="num">${String(idx + 1).padStart(2, '0')}</span>
+                                    <span class="name">${ch.name}</span>
+                                    <span class="q-count">${ch.questions?.length || 0} questions</span>
+                                </div>
+                                <div class="right">
+                                    <button class="btn-icon" onclick="addQuestion('${exam.id}','${ch.id}')" title="Add Question">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button class="btn-icon" onclick="editChapter('${exam.id}','${ch.id}')" title="Edit Chapter">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-icon danger" onclick="deleteChapter('${exam.id}','${ch.id}')" title="Delete Chapter">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            ${ch.questions && ch.questions.length > 0 ? `
+                                <div class="questions-list">
+                                    ${ch.questions.map((q, qi) => `
+                                        <div class="q-item">
+                                            <span class="q-text">${qi+1}. ${q.text}</span>
+                                            <div class="q-actions">
+                                                <button onclick="editQuestion('${exam.id}','${ch.id}','${q.id}')" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="danger" onclick="deleteQuestion('${exam.id}','${ch.id}','${q.id}')" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : `
+                                <div style="margin-top:8px;font-size:12px;color:var(--text-muted);">
+                                    <i class="fas fa-info-circle"></i> No questions added yet
+                                </div>
+                            `}
+                            <button class="btn-add-question" onclick="addQuestion('${exam.id}','${ch.id}')">
+                                <i class="fas fa-plus"></i> Add Question
+                            </button>
+                        </div>
+                    `).join('');
+        }
+
+        // ============================================================
+        // BACK TO DASHBOARD
+        // ============================================================
+        backToDashboard.addEventListener('click', function() {
+            showPage('pageDashboard');
+            renderDashboard();
+        });
+
+        // ============================================================
+        // ADD EXAM
+        // ============================================================
+        addExamBtn.addEventListener('click', function() {
+            openModal('Add New Exam', `
+                        <div class="form-group">
+                            <label>Exam Name</label>
+                            <input type="text" id="examNameInput" placeholder="e.g. UP Board Class 10" />
+                        </div>
+                        <div class="form-group">
+                            <label>Icon (Emoji)</label>
+                            <input type="text" id="examIconInput" placeholder="e.g. 📘" maxlength="2" />
+                        </div>
+                        <button class="btn-submit" onclick="submitAddExam()">Create Exam</button>
+                    `);
+        });
+
+        function submitAddExam() {
+            const name = document.getElementById('examNameInput').value.trim();
+            const icon = document.getElementById('examIconInput').value.trim() || '📚';
+
+            if (!name) {
+                alert('Please enter exam name.');
+                return;
+            }
+
+            data.exams.push({
+                id: genId('exam'),
+                name: name,
+                icon: icon,
+                chapters: []
+            });
+
+            saveData();
+            closeModal();
+            renderDashboard();
+            showToast('✅ Exam created successfully!');
+        }
+
+        // ============================================================
+        // EDIT EXAM
+        // ============================================================
+        function editExam(examId) {
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+
+            openModal('Edit Exam', `
+                        <div class="form-group">
+                            <label>Exam Name</label>
+                            <input type="text" id="editExamName" value="${exam.name}" />
+                        </div>
+                        <div class="form-group">
+                            <label>Icon (Emoji)</label>
+                            <input type="text" id="editExamIcon" value="${exam.icon || '📚'}" maxlength="2" />
+                        </div>
+                        <button class="btn-submit" onclick="submitEditExam('${examId}')">Update Exam</button>
+                    `);
+        }
+
+        function submitEditExam(examId) {
+            const name = document.getElementById('editExamName').value.trim();
+            const icon = document.getElementById('editExamIcon').value.trim() || '📚';
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+
+            if (!name) {
+                alert('Please enter exam name.');
+                return;
+            }
+
+            exam.name = name;
+            exam.icon = icon;
+            saveData();
+            closeModal();
+            renderDashboard();
+            showToast('✅ Exam updated successfully!');
+        }
+
+        // ============================================================
+        // DELETE EXAM
+        // ============================================================
+        function deleteExam(examId) {
+            if (!confirm('Delete this exam and all its chapters?')) return;
+            data.exams = data.exams.filter(e => e.id !== examId);
+            saveData();
+            renderDashboard();
+            showToast('🗑️ Exam deleted.');
+        }
+
+        // ============================================================
+        // ADD CHAPTER
+        // ============================================================
+        addChapterBtn.addEventListener('click', function() {
+            if (!currentExamId) return;
+            openModal('Add New Chapter', `
+                        <div class="form-group">
+                            <label>Chapter Name</label>
+                            <input type="text" id="chapterNameInput" placeholder="e.g. Prose" />
+                        </div>
+                        <button class="btn-submit" onclick="submitAddChapter()">Create Chapter</button>
+                    `);
+        });
+
+        function submitAddChapter() {
+            const name = document.getElementById('chapterNameInput').value.trim();
+            if (!name) {
+                alert('Please enter chapter name.');
+                return;
+            }
+
+            const exam = data.exams.find(e => e.id === currentExamId);
+            if (!exam) return;
+
+            exam.chapters.push({
+                id: genId('ch'),
+                name: name,
+                questions: []
+            });
+
+            saveData();
+            closeModal();
+            openExamDetail(currentExamId);
+            showToast('✅ Chapter created successfully!');
+        }
+
+        // ============================================================
+        // EDIT CHAPTER
+        // ============================================================
+        function editChapter(examId, chapterId) {
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+            const ch = exam.chapters.find(c => c.id === chapterId);
+            if (!ch) return;
+
+            openModal('Edit Chapter', `
+                        <div class="form-group">
+                            <label>Chapter Name</label>
+                            <input type="text" id="editChapterName" value="${ch.name}" />
+                        </div>
+                        <button class="btn-submit" onclick="submitEditChapter('${examId}','${chapterId}')">Update Chapter</button>
+                    `);
+        }
+
+        function submitEditChapter(examId, chapterId) {
+            const name = document.getElementById('editChapterName').value.trim();
+            if (!name) {
+                alert('Please enter chapter name.');
+                return;
+            }
+
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+            const ch = exam.chapters.find(c => c.id === chapterId);
+            if (!ch) return;
+
+            ch.name = name;
+            saveData();
+            closeModal();
+            openExamDetail(examId);
+            showToast('✅ Chapter updated!');
+        }
+
+        // ============================================================
+        // DELETE CHAPTER
+        // ============================================================
+        function deleteChapter(examId, chapterId) {
+            if (!confirm('Delete this chapter and all its questions?')) return;
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+            exam.chapters = exam.chapters.filter(c => c.id !== chapterId);
+            saveData();
+            openExamDetail(examId);
+            showToast('🗑️ Chapter deleted.');
+        }
+
+        // ============================================================
+        // ADD QUESTION
+        // ============================================================
+        function addQuestion(examId, chapterId) {
+            openModal('Add Question', `
+                        <div class="form-group">
+                            <label>Question</label>
+                            <textarea id="qText" placeholder="Enter your question here..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Options</label>
+                            <div class="options-grid">
+                                <input type="text" id="qOptA" placeholder="Option A" />
+                                <input type="text" id="qOptB" placeholder="Option B" />
+                                <input type="text" id="qOptC" placeholder="Option C" />
+                                <input type="text" id="qOptD" placeholder="Option D" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Correct Answer</label>
+                            <select id="qCorrect">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                        <button class="btn-submit" onclick="submitAddQuestion('${examId}','${chapterId}')">Add Question</button>
+                    `);
+        }
+
+        function submitAddQuestion(examId, chapterId) {
+            const text = document.getElementById('qText').value.trim();
+            const optA = document.getElementById('qOptA').value.trim();
+            const optB = document.getElementById('qOptB').value.trim();
+            const optC = document.getElementById('qOptC').value.trim();
+            const optD = document.getElementById('qOptD').value.trim();
+            const correct = document.getElementById('qCorrect').value;
+
+            if (!text || !optA || !optB || !optC || !optD) {
+                alert('Please fill all fields.');
+                return;
+            }
+
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+            const ch = exam.chapters.find(c => c.id === chapterId);
+            if (!ch) return;
+
+            ch.questions.push({
+                id: genId('q'),
+                text: text,
+                options: [optA, optB, optC, optD],
+                correct: correct
+            });
+
+            saveData();
+            closeModal();
+            openExamDetail(examId);
+            showToast('✅ Question added successfully!');
+        }
+
+        // ============================================================
+        // EDIT QUESTION
+        // ============================================================
+        function editQuestion(examId, chapterId, questionId) {
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+            const ch = exam.chapters.find(c => c.id === chapterId);
+            if (!ch) return;
+            const q = ch.questions.find(q => q.id === questionId);
+            if (!q) return;
+
+            openModal('Edit Question', `
+                        <div class="form-group">
+                            <label>Question</label>
+                            <textarea id="editQText">${q.text}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Options</label>
+                            <div class="options-grid">
+                                <input type="text" id="editQOptA" value="${q.options[0] || ''}" placeholder="Option A" />
+                                <input type="text" id="editQOptB" value="${q.options[1] || ''}" placeholder="Option B" />
+                                <input type="text" id="editQOptC" value="${q.options[2] || ''}" placeholder="Option C" />
+                                <input type="text" id="editQOptD" value="${q.options[3] || ''}" placeholder="Option D" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Correct Answer</label>
+                            <select id="editQCorrect">
+                                <option value="A" ${q.correct === 'A' ? 'selected' : ''}>A</option>
+                                <option value="B" ${q.correct === 'B' ? 'selected' : ''}>B</option>
+                                <option value="C" ${q.correct === 'C' ? 'selected' : ''}>C</option>
+                                <option value="D" ${q.correct === 'D' ? 'selected' : ''}>D</option>
+                            </select>
+                        </div>
+                        <button class="btn-submit" onclick="submitEditQuestion('${examId}','${chapterId}','${questionId}')">Update Question</button>
+                    `);
+        }
+
+        function submitEditQuestion(examId, chapterId, questionId) {
+            const text = document.getElementById('editQText').value.trim();
+            const optA = document.getElementById('editQOptA').value.trim();
+            const optB = document.getElementById('editQOptB').value.trim();
+            const optC = document.getElementById('editQOptC').value.trim();
+            const optD = document.getElementById('editQOptD').value.trim();
+            const correct = document.getElementById('editQCorrect').value;
+
+            if (!text || !optA || !optB || !optC || !optD) {
+                alert('Please fill all fields.');
+                return;
+            }
+
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+            const ch = exam.chapters.find(c => c.id === chapterId);
+            if (!ch) return;
+            const q = ch.questions.find(q => q.id === questionId);
+            if (!q) return;
+
+            q.text = text;
+            q.options = [optA, optB, optC, optD];
+            q.correct = correct;
+
+            saveData();
+            closeModal();
+            openExamDetail(examId);
+            showToast('✅ Question updated!');
+        }
+
+        // ============================================================
+        // DELETE QUESTION
+        // ============================================================
+        function deleteQuestion(examId, chapterId, questionId) {
+            if (!confirm('Delete this question?')) return;
+            const exam = data.exams.find(e => e.id === examId);
+            if (!exam) return;
+            const ch = exam.chapters.find(c => c.id === chapterId);
+            if (!ch) return;
+            ch.questions = ch.questions.filter(q => q.id !== questionId);
+            saveData();
+            openExamDetail(examId);
+            showToast('🗑️ Question deleted.');
+        }
+
+        // ============================================================
+        // MODAL
+        // ============================================================
+        function openModal(title, bodyHTML) {
+            modalTitle.textContent = title;
+            modalBody.innerHTML = bodyHTML;
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ============================================================
+        // TOAST (simple)
+        // ============================================================
+        function showToast(message) {
+            const existing = document.querySelector('.admin-toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'admin-toast';
+            toast.style.cssText = `
+                        position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+                        background: var(--text); color: #fff; padding: 10px 24px;
+                        border-radius: 12px; font-size: 14px; font-weight: 600;
+                        font-family: 'Inter', sans-serif; z-index: 9999;
+                        box-shadow: 0 8px 32px rgba(0,0,0,0.20);
+                        animation: fadeUp 0.3s ease;
+                    `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // ============================================================
+        // KEYBOARD SHORTCUTS
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Enter' && modalOverlay.classList.contains('active')) {
+                const submitBtn = modalBody.querySelector('.btn-submit');
+                if (submitBtn) submitBtn.click();
+            }
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        console.log('📚 Examiyo Admin Panel loaded');
+        console.log('🔑 Password: 8596');
+    </script>
+</body>
+</html>
